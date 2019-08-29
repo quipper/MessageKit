@@ -163,6 +163,7 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
         sizeCalculator.messageLabelFont = UIFont.systemFont(ofSize: sizeCalculator.messageLabelFont.pointSize * 2)
         return sizeCalculator
     }()
+    lazy open var announcementMessageSizeCalculator = AnnouncementMessageSizeCalculator(layout: self)
     lazy open var photoMessageSizeCalculator = MediaMessageSizeCalculator(layout: self)
     lazy open var videoMessageSizeCalculator = MediaMessageSizeCalculator(layout: self)
     lazy open var locationMessageSizeCalculator = LocationMessageSizeCalculator(layout: self)
@@ -187,6 +188,8 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
             return attributedTextMessageSizeCalculator
         case .emoji:
             return emojiMessageSizeCalculator
+        case .announcement:
+            return announcementMessageSizeCalculator
         case .photo:
             return photoMessageSizeCalculator
         case .video:
@@ -321,7 +324,8 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 videoMessageSizeCalculator,
                 locationMessageSizeCalculator,
                 audioMessageSizeCalculator,
-                contactMessageSizeCalculator
+                contactMessageSizeCalculator,
+                announcementMessageSizeCalculator
         ]
     }
     

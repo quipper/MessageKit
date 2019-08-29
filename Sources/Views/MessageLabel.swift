@@ -490,14 +490,7 @@ open class MessageLabel: UILabel {
             handleTransitInformation(transformedTransitInformation)
         case let .custom(pattern, match):
             guard let match = match else { return }
-            switch detectorType {
-            case .hashtag:
-                handleHashtag(match)
-            case .mention:
-                handleMention(match)
-            default:
-                handleCustom(pattern, match: match)
-            }
+            handleCustom(pattern, match: match)
         }
     }
     // swiftlint:enable cyclomatic_complexity

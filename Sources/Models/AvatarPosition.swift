@@ -41,6 +41,10 @@ public struct AvatarPosition: Equatable {
         /// The cell is positioned `.cellTrailling` if `isFromCurrentSender` is true
         /// and `.cellLeading` if false.
         case natural
+        
+        /// Positions when the `AvatarView` isn't needed.
+        /// The cell is positioned center.
+        case none
     }
     
     /// An enum representing the verical alignment for an `AvatarView`.
@@ -64,6 +68,8 @@ public struct AvatarPosition: Equatable {
         /// Aligns the `AvatarView`'s bottom edge to the cell's bottom edge.
         case cellBottom
         
+        /// Positions when the `AvatarView` isn't needed.
+        case none
     }
     
     // MARK: - Properties

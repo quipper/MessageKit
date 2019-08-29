@@ -318,14 +318,8 @@ extension AdvancedExampleViewController: MessagesDisplayDelegate {
                 corners.formUnion(.bottomLeft)
             }
         }
-        
-        return .custom { view in
-            let radius: CGFloat = 16
-            let path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-            let mask = CAShapeLayer()
-            mask.path = path.cgPath
-            view.layer.mask = mask
-        }
+
+        return .none
     }
     
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {

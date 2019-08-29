@@ -30,7 +30,7 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
     // MARK: - Properties
 
     public var avatarSize: CGSize = .zero
-    public var avatarPosition = AvatarPosition(vertical: .cellBottom)
+    public var avatarPosition = AvatarPosition(vertical: .cellTop)
     public var avatarLeadingTrailingPadding: CGFloat = 0
 
     public var messageContainerSize: CGSize = .zero
@@ -54,6 +54,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
     public var accessoryViewPadding: HorizontalEdgeInsets = .zero
     public var accessoryViewPosition: AccessoryPosition = .messageCenter
     
+    public var timeLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
+    public var timeLabelSize: CGSize = .zero
     // MARK: - Methods
 
     open override func copy(with zone: NSZone? = nil) -> Any {
@@ -77,6 +79,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
         copy.accessoryViewSize = accessoryViewSize
         copy.accessoryViewPadding = accessoryViewPadding
         copy.accessoryViewPosition = accessoryViewPosition
+        copy.timeLabelAlignment = timeLabelAlignment
+        copy.timeLabelSize = timeLabelSize
         return copy
         // swiftlint:enable force_cast
     }
@@ -102,6 +106,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
                 && attributes.accessoryViewSize == accessoryViewSize
                 && attributes.accessoryViewPadding == accessoryViewPadding
                 && attributes.accessoryViewPosition == accessoryViewPosition
+                && attributes.timeLabelAlignment == timeLabelAlignment
+                && attributes.timeLabelSize == timeLabelSize
         } else {
             return false
         }

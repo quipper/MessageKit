@@ -167,9 +167,8 @@ open class AvatarView: UIImageView {
         clipsToBounds = true
         setCorner(radius: nil)
     }
-
-    // MARK: - Open setters
     
+    // MARK: - Open setters
     open func set(avatar: Avatar) {
         if let image = avatar.image {
             self.image = image

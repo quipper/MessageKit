@@ -353,7 +353,6 @@ final class MessageLabelSpec: QuickSpec {
 
      */
     private func set(text: String, and detectors: [DetectorType], with attributes: [NSAttributedString.Key: Any], to label: MessageLabel) {
-        label.mentionAttributes = attributes
         label.enabledDetectors = detectors
         label.text = text
     }

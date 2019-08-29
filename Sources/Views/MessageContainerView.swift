@@ -28,61 +28,44 @@ open class MessageContainerView: UIImageView {
 
     // MARK: - Properties
 
-    private let imageMask = UIImageView()
-
     open var style: MessageStyle = .none {
         didSet {
             applyMessageStyle()
         }
     }
 
-    open override var frame: CGRect {
-        didSet {
-            sizeMaskToView()
-        }
-    }
-
     // MARK: - Methods
-
-    private func sizeMaskToView() {
-        switch style {
-        case .none, .custom:
-            break
-        case .bubble, .bubbleTail, .bubbleOutline, .bubbleTailOutline:
-            imageMask.frame = bounds
-        }
-    }
-
     private func applyMessageStyle() {
         switch style {
-        case .bubble, .bubbleTail:
-            imageMask.image = style.image
-            sizeMaskToView()
-            mask = imageMask
-            image = nil
-        case .bubbleOutline(let color):
-            let bubbleStyle: MessageStyle = .bubble
-            imageMask.image = bubbleStyle.image
-            sizeMaskToView()
-            mask = imageMask
-            image = style.image?.withRenderingMode(.alwaysTemplate)
-            tintColor = color
-        case .bubbleTailOutline(let color, let tail, let corner):
-            let bubbleStyle: MessageStyle = .bubbleTail(tail, corner)
-            imageMask.image = bubbleStyle.image
-            sizeMaskToView()
-            mask = imageMask
-            image = style.image?.withRenderingMode(.alwaysTemplate)
-            tintColor = color
+        case .leftBubble, .rightBubble:
+            layer.cornerRadius = 4
+            layer.mask = maskLayer(style: style, roundedRect: bounds)
+
+        case .announcement:
+            layer.cornerRadius = 30
+            layer.mask = nil
+
         case .none:
-            mask = nil
-            image = nil
-            tintColor = nil
-        case .custom(let configurationClosure):
-            mask = nil
-            image = nil
-            tintColor = nil
-            configurationClosure(self)
+            break
         }
+    }
+
+    private func maskLayer(style: MessageStyle, roundedRect: CGRect) -> CAShapeLayer {
+        let roundingCorners: UIRectCorner
+        switch style {
+        case .leftBubble:
+            roundingCorners = [.topRight, .bottomLeft, .bottomRight]
+        case .rightBubble:
+            roundingCorners = [.topLeft, .bottomLeft, .bottomRight]
+        default:
+            fatalError("This style never calls this function.")
+        }
+
+        let maskPath = UIBezierPath(roundedRect: roundedRect,
+                                    byRoundingCorners: roundingCorners,
+                                    cornerRadii: CGSize(width: 10, height: 0))
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = maskPath.cgPath
+        return maskLayer
     }
 }

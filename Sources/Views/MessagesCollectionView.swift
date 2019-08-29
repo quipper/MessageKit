@@ -63,7 +63,9 @@ open class MessagesCollectionView: UICollectionView {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        super.init(frame: .zero, collectionViewLayout: MessagesCollectionViewFlowLayout())
+        super.init(coder: aDecoder)
+        registerReusableViews()
+        setupGestureRecognizers()
     }
 
     public convenience init() {
@@ -103,8 +105,10 @@ open class MessagesCollectionView: UICollectionView {
     public func scrollToBottom(animated: Bool = false) {
         let collectionViewContentHeight = collectionViewLayout.collectionViewContentSize.height
 
-        performBatchUpdates(nil) { _ in
-            self.scrollRectToVisible(CGRect(0.0, collectionViewContentHeight - 1.0, 1.0, 1.0), animated: animated)
+        performBatchUpdates(nil) { [weak self] _ in
+            self?.scrollRectToVisible(CGRect(x: 0.0, y: collectionViewContentHeight - 1.0,
+                                             width: 1.0, height: 1.0),
+                                      animated: animated)
         }
     }
     
@@ -163,7 +167,7 @@ open class MessagesCollectionView: UICollectionView {
     public func register<T: UICollectionReusableView>(_ nib: UINib? = UINib(nibName: String(describing: T.self), bundle: nil), headerFooterClassOfNib headerFooterClass: T.Type, forSupplementaryViewOfKind kind: String) {
         register(nib,
                  forSupplementaryViewOfKind: kind,
-                 withReuseIdentifier: String(describing: T.self))        
+                 withReuseIdentifier: String(describing: T.self))
     }
 
     /// Generically dequeues a cell of the correct type allowing you to avoid scattering your code with guard-let-else-fatal

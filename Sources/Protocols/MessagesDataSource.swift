@@ -103,6 +103,9 @@ public protocol MessagesDataSource: AnyObject {
     /// The default value returned by this method is `nil`.
     func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString?
     
+    /// The attributed text to be used for message's timestamp.
+    func timeLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString?
+
     /// Custom collectionView cell for message with `custom` message type.
     ///
     /// - Parameters:
@@ -148,7 +151,11 @@ public extension MessagesDataSource {
     func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         return nil
     }
-    
+
+    func timeLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        return nil
+    }
+
     func customCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UICollectionViewCell {
         fatalError(MessageKitError.customDataUnresolvedCell)
     }

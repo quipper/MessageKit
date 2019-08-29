@@ -29,6 +29,7 @@
 		50739F9621C5090A008CA369 /* BasicAudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50739F9521C5090A008CA369 /* BasicAudioController.swift */; };
 		5074EF4E2163555900D82952 /* sound2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5074EF4C2163555900D82952 /* sound2.m4a */; };
 		5074EF4F2163555900D82952 /* sound1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5074EF4D2163555900D82952 /* sound1.m4a */; };
+		5943ED9D23154E4D004D8B57 /* AnnouncementExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5943ED9C23154E4D004D8B57 /* AnnouncementExampleViewController.swift */; };
 		882B5E811CF7D53600B6E160 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882B5E781CF7D53600B6E160 /* AppDelegate.swift */; };
 		882B5E821CF7D53600B6E160 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 882B5E791CF7D53600B6E160 /* Assets.xcassets */; };
 		882B5E831CF7D53600B6E160 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882B5E7A1CF7D53600B6E160 /* LaunchScreen.storyboard */; };
@@ -96,6 +97,7 @@
 		5074EF4C2163555900D82952 /* sound2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound2.m4a; sourceTree = "<group>"; };
 		5074EF4D2163555900D82952 /* sound1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = sound1.m4a; sourceTree = "<group>"; };
 		56F0AC85B38034EC92CCBC7D /* Pods_ChatExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5943ED9C23154E4D004D8B57 /* AnnouncementExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementExampleViewController.swift; sourceTree = "<group>"; };
 		882B5E331CF7D4B900B6E160 /* ChatExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		882B5E491CF7D4B900B6E160 /* ChatExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		882B5E541CF7D4B900B6E160 /* ChatExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				385C293B211FF38E0010B4BA /* AdvancedExampleViewController.swift */,
+				5943ED9C23154E4D004D8B57 /* AnnouncementExampleViewController.swift */,
 				38CCCC582258419300DD5482 /* AutocompleteExampleViewController.swift */,
 				385C2940211FF38F0010B4BA /* BasicExampleViewController.swift */,
 				385C2941211FF38F0010B4BA /* ChatViewController.swift */,
@@ -541,6 +544,7 @@
 				50739F9621C5090A008CA369 /* BasicAudioController.swift in Sources */,
 				385C2937211FF37B0010B4BA /* SampleData.swift in Sources */,
 				385C2931211FF3630010B4BA /* UIColor+Extensions.swift in Sources */,
+				5943ED9D23154E4D004D8B57 /* AnnouncementExampleViewController.swift in Sources */,
 				385C2932211FF3630010B4BA /* UIViewController+Extensions.swift in Sources */,
 				385C292B211FF3450010B4BA /* Settings+UserDefaults.swift in Sources */,
 				385C2945211FF38F0010B4BA /* NavigationController.swift in Sources */,

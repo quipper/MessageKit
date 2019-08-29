@@ -220,7 +220,7 @@ public extension MessagesDisplayDelegate {
     // MARK: - All Messages Defaults
 
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
-        return .bubble
+        return .none
     }
 
     func backgroundColor(for message: MessageType, at  indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
@@ -230,7 +230,7 @@ public extension MessagesDisplayDelegate {
             return .clear
         default:
             guard let dataSource = messagesCollectionView.messagesDataSource else { return .white }
-            return dataSource.isFromCurrentSender(message: message) ? .outgoingGreen : .incomingGray
+            return dataSource.isFromCurrentSender(message: message) ? UIColor.outgoingGreen : UIColor.incomingGray
         }
     }
     
@@ -242,9 +242,7 @@ public extension MessagesDisplayDelegate {
         return messagesCollectionView.dequeueReusableFooterView(MessageReusableView.self, for: indexPath)
     }
     
-    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        avatarView.initials = "?"
-    }
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {}
 
     func configureAccessoryView(_ accessoryView: UIView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {}
 

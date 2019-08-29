@@ -57,6 +57,9 @@ public enum MessageKind {
     /// A contact message.
     case contact(ContactItem)
 
+    /// An announcement message.
+    case announcement(String)
+    
     /// A custom message.
     /// - Note: Using this case requires that you implement the following methods and handle this case:
     ///   - MessagesDataSource: customCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UICollectionViewCell
@@ -66,7 +69,7 @@ public enum MessageKind {
     // MARK: - Not supported yet
 
 //    case system(String)
-//    
+//
 //    case placeholder
 
 }
