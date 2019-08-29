@@ -122,50 +122,50 @@ final class MessageLabelSpec: QuickSpec {
 
             }
 
-//            context("address detection is enabled") {
-//                it("applies addressAttributes to text") {
-//                    let expectedColor = UIColor.blue
-//                    messageLabel.addressAttributes = [.foregroundColor: expectedColor]
-//                    messageLabel.text = "One Infinite Loop Cupertino, CA 95014"
-//                    messageLabel.enabledDetectors = [.address]
-//                    let attributes = messageLabel.textAttributes
-//                    let textColor = attributes[.foregroundColor] as? UIColor
-//                    expect(textColor).to(equal(expectedColor))
-//                }
-//            }
-//            context("phone number detection is enabled") {
-//                it("applies phoneNumberAttributes to text") {
-//                    let expectedFont = UIFont.systemFont(ofSize: 8)
-//                    messageLabel.phoneNumberAttributes = [.font: expectedFont]
-//                    messageLabel.text = "1-800-555-1234"
-//                    messageLabel.enabledDetectors = [.phoneNumber]
-//                    let attributes = messageLabel.textAttributes
-//                    let textFont = attributes[.font] as? UIFont
-//                    expect(textFont).to(equal(expectedFont))
-//                }
-//            }
-//            context("url detection is enabled") {
-//                it("applies urlAttributes to text") {
-//                    let expectedColor = UIColor.green
-//                    messageLabel.urlAttributes = [.foregroundColor: expectedColor]
-//                    messageLabel.text = "https://github.com/MessageKit"
-//                    messageLabel.enabledDetectors = [.url]
-//                    let attributes = messageLabel.textAttributes
-//                    let textColor = attributes[.foregroundColor] as? UIColor
-//                    expect(textColor).to(equal(expectedColor))
-//                }
-//            }
-//            context("date detection is enabled") {
-//                it("applies dateAttributes to text") {
-//                    let expectedFont = UIFont.italicSystemFont(ofSize: 22)
-//                    messageLabel.dateAttributes = [.font: expectedFont]
-//                    messageLabel.text = "Today"
-//                    messageLabel.enabledDetectors = [.date]
-//                    let attributes = messageLabel.textAttributes
-//                    let textFont = attributes[.font] as? UIFont
-//                    expect(textFont).to(equal(expectedFont))
-//                }
-//            }
+            //            context("address detection is enabled") {
+            //                it("applies addressAttributes to text") {
+            //                    let expectedColor = UIColor.blue
+            //                    messageLabel.addressAttributes = [.foregroundColor: expectedColor]
+            //                    messageLabel.text = "One Infinite Loop Cupertino, CA 95014"
+            //                    messageLabel.enabledDetectors = [.address]
+            //                    let attributes = messageLabel.textAttributes
+            //                    let textColor = attributes[.foregroundColor] as? UIColor
+            //                    expect(textColor).to(equal(expectedColor))
+            //                }
+            //            }
+            //            context("phone number detection is enabled") {
+            //                it("applies phoneNumberAttributes to text") {
+            //                    let expectedFont = UIFont.systemFont(ofSize: 8)
+            //                    messageLabel.phoneNumberAttributes = [.font: expectedFont]
+            //                    messageLabel.text = "1-800-555-1234"
+            //                    messageLabel.enabledDetectors = [.phoneNumber]
+            //                    let attributes = messageLabel.textAttributes
+            //                    let textFont = attributes[.font] as? UIFont
+            //                    expect(textFont).to(equal(expectedFont))
+            //                }
+            //            }
+            //            context("url detection is enabled") {
+            //                it("applies urlAttributes to text") {
+            //                    let expectedColor = UIColor.green
+            //                    messageLabel.urlAttributes = [.foregroundColor: expectedColor]
+            //                    messageLabel.text = "https://github.com/MessageKit"
+            //                    messageLabel.enabledDetectors = [.url]
+            //                    let attributes = messageLabel.textAttributes
+            //                    let textColor = attributes[.foregroundColor] as? UIColor
+            //                    expect(textColor).to(equal(expectedColor))
+            //                }
+            //            }
+            //            context("date detection is enabled") {
+            //                it("applies dateAttributes to text") {
+            //                    let expectedFont = UIFont.italicSystemFont(ofSize: 22)
+            //                    messageLabel.dateAttributes = [.font: expectedFont]
+            //                    messageLabel.text = "Today"
+            //                    messageLabel.enabledDetectors = [.date]
+            //                    let attributes = messageLabel.textAttributes
+            //                    let textFont = attributes[.font] as? UIFont
+            //                    expect(textFont).to(equal(expectedFont))
+            //                }
+            //            }
         }
 
         describe("the synchronization between text and attributedText") {
@@ -326,10 +326,10 @@ final class MessageLabelSpec: QuickSpec {
     /**
      Takes a given `DetectorType` and extract matches from a `MessageLabel`
 
-     - Parameters: detector: `DetectorType` that you want to extract
-     - Parameters: label: `MessageLabel` where you want to get matches
+     Parameters: detector: `DetectorType` that you want to extract
+     Parameters: label: `MessageLabel` where you want to get matches
 
-     - Returns: an array of `String` that contains all matches for the given detector
+     Returns: an array of `String` that contains all matches for the given detector
      */
     private func extractCustomDetectors(for detector: DetectorType, with label: MessageLabel) -> [String] {
         guard let detection = label.rangesForDetectors[detector] else { return [] }
@@ -346,14 +346,13 @@ final class MessageLabelSpec: QuickSpec {
     /**
      Simply set text, detectors and attriutes to a given label
 
-     - Parameters: text: `String` that will be applied to the label
-     - Parameters: detector: `DetectorType` that you want to apply to the label
-     - Parameters: attributes: `[NSAttributedString.Key: Any]` that you want to apply to the label
-     - Parameters: label: `MessageLabel` that takes the previous parameters
+     Parameters: text: `String` that will be applied to the label
+     Parameters: detector: `DetectorType` that you want to apply to the label
+     Parameters: attributes: `[NSAttributedString.Key: Any]` that you want to apply to the label
+     Parameters: label: `MessageLabel` that takes the previous parameters
 
      */
     private func set(text: String, and detectors: [DetectorType], with attributes: [NSAttributedString.Key: Any], to label: MessageLabel) {
-        label.mentionAttributes = attributes
         label.enabledDetectors = detectors
         label.text = text
     }

@@ -28,15 +28,15 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
     public init(layout: MessagesCollectionViewFlowLayout? = nil) {
         super.init()
-        
+
         self.layout = layout
     }
 
-    public var incomingAvatarSize = CGSize(width: 30, height: 30)
-    public var outgoingAvatarSize = CGSize(width: 30, height: 30)
+    public var incomingAvatarSize = CGSize(width: 40, height: 40)
+    public var outgoingAvatarSize = CGSize.zero
 
-    public var incomingAvatarPosition = AvatarPosition(vertical: .cellBottom)
-    public var outgoingAvatarPosition = AvatarPosition(vertical: .cellBottom)
+    public var incomingAvatarPosition = AvatarPosition(vertical: .messageLabelTop)
+    public var outgoingAvatarPosition = AvatarPosition(vertical: .messageLabelTop)
 
     public var avatarLeadingTrailingPadding: CGFloat = 0
 
@@ -45,7 +45,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
     public var incomingCellTopLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
     public var outgoingCellTopLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
-    
+
     public var incomingCellBottomLabelAlignment = LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(left: 42))
     public var outgoingCellBottomLabelAlignment = LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(right: 42))
 
@@ -60,9 +60,12 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
     public var incomingAccessoryViewPadding = HorizontalEdgeInsets.zero
     public var outgoingAccessoryViewPadding = HorizontalEdgeInsets.zero
-    
+
     public var incomingAccessoryViewPosition: AccessoryPosition = .messageCenter
     public var outgoingAccessoryViewPosition: AccessoryPosition = .messageCenter
+
+    public var incomingTimeLabelAlignment = LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(left: 8))
+    public var outgoingTimeLabelAlignment = LabelAlignment(textAlignment: .right, textInsets: UIEdgeInsets(right: 8))
 
     open override func configure(attributes: UICollectionViewLayoutAttributes) {
         guard let attributes = attributes as? MessagesCollectionViewLayoutAttributes else { return }
@@ -89,6 +92,9 @@ open class MessageSizeCalculator: CellSizeCalculator {
         attributes.accessoryViewSize = accessoryViewSize(for: message)
         attributes.accessoryViewPadding = accessoryViewPadding(for: message)
         attributes.accessoryViewPosition = accessoryViewPosition(for: message)
+
+        attributes.timeLabelAlignment = timeLabelAlignment(for: message)
+        attributes.timeLabelSize = timeLabelSize(for: message, at: indexPath)
     }
 
     open override func sizeForItem(at indexPath: IndexPath) -> CGSize {
@@ -136,7 +142,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
             let messageLabelsHeight = messageContainerHeight + messageBottomLabelHeight + messageVerticalPadding + messageTopLabelHeight + cellBottomLabelHeight
             cellHeight += max(messageLabelsHeight, avatarHeight)
             return max(cellHeight, accessoryViewHeight)
-        case .cellTop, .cellBottom:
+        case .cellTop, .cellBottom, .none:
             let totalLabelHeight: CGFloat = cellTopLabelHeight + messageTopLabelHeight
                 + messageContainerHeight + messageVerticalPadding + messageBottomLabelHeight + cellBottomLabelHeight
             let cellHeight = max(avatarHeight, totalLabelHeight)
@@ -152,7 +158,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
         var position = isFromCurrentSender ? outgoingAvatarPosition : incomingAvatarPosition
 
         switch position.horizontal {
-        case .cellTrailing, .cellLeading:
+        case .cellTrailing, .cellLeading, .none:
             break
         case .natural:
             position.horizontal = isFromCurrentSender ? .cellTrailing : .cellLeading
@@ -180,31 +186,31 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         return isFromCurrentSender ? outgoingCellTopLabelAlignment : incomingCellTopLabelAlignment
     }
-    
+
     // MARK: - Top message Label
-    
+
     open func messageTopLabelSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
         let layoutDelegate = messagesLayout.messagesLayoutDelegate
         let collectionView = messagesLayout.messagesCollectionView
         let height = layoutDelegate.messageTopLabelHeight(for: message, at: indexPath, in: collectionView)
         return CGSize(width: messagesLayout.itemWidth, height: height)
     }
-    
+
     open func messageTopLabelAlignment(for message: MessageType) -> LabelAlignment {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         return isFromCurrentSender ? outgoingMessageTopLabelAlignment : incomingMessageTopLabelAlignment
     }
-    
+
     // MARK: - Bottom cell Label
-    
+
     open func cellBottomLabelSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
         let layoutDelegate = messagesLayout.messagesLayoutDelegate
         let collectionView = messagesLayout.messagesCollectionView
         let height = layoutDelegate.cellBottomLabelHeight(for: message, at: indexPath, in: collectionView)
         return CGSize(width: messagesLayout.itemWidth, height: height)
     }
-    
+
     open func cellBottomLabelAlignment(for message: MessageType) -> LabelAlignment {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
@@ -227,7 +233,6 @@ open class MessageSizeCalculator: CellSizeCalculator {
     }
 
     // MARK: - Accessory View
-
     public func accessoryViewSize(for message: MessageType) -> CGSize {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
@@ -239,11 +244,35 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         return isFromCurrentSender ? outgoingAccessoryViewPadding : incomingAccessoryViewPadding
     }
-    
+
     public func accessoryViewPosition(for message: MessageType) -> AccessoryPosition {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         return isFromCurrentSender ? outgoingAccessoryViewPosition : incomingAccessoryViewPosition
+    }
+
+    // MARK: - Time Label
+
+    open func timeLabelSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
+        let layoutDelegate = messagesLayout.messagesLayoutDelegate
+        let collectionView = messagesLayout.messagesCollectionView
+        let dataSource = messagesLayout.messagesDataSource
+        let height = layoutDelegate.timeLabelHeight(for: message, at: indexPath, in: collectionView)
+        let width: CGFloat
+        if let text = dataSource.timeLabelAttributedText(for: message, at: indexPath) {
+            let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
+            let insetWidth = isFromCurrentSender ? outgoingTimeLabelAlignment.textInsets.horizontal : incomingTimeLabelAlignment.textInsets.horizontal
+            width = labelSize(for: text, considering: messagesLayout.itemWidth).width + insetWidth
+        } else {
+            width = messagesLayout.itemWidth
+        }
+        return CGSize(width: width, height: height)
+    }
+
+    open func timeLabelAlignment(for message: MessageType) -> LabelAlignment {
+        let dataSource = messagesLayout.messagesDataSource
+        let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
+        return isFromCurrentSender ? outgoingTimeLabelAlignment : incomingTimeLabelAlignment
     }
 
     // MARK: - MessageContainer

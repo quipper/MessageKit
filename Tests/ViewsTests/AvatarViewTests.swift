@@ -46,18 +46,8 @@ class AvatarViewTests: XCTestCase {
     }
 
     func testWithImage() {
-        let avatar = Avatar(image: UIImage())
+        let avatar = Avatar(image: nil)
         avatarView.set(avatar: avatar)
-        XCTAssertEqual(avatar.initials, "?")
-        XCTAssertEqual(avatarView.layer.cornerRadius, 15.0)
-        XCTAssertEqual(avatarView.backgroundColor, UIColor.gray)
-    }
-
-    func testInitialsOnly() {
-        let avatar = Avatar(initials: "DL")
-        avatarView.set(avatar: avatar)
-        XCTAssertEqual(avatarView.initials, avatar.initials)
-        XCTAssertEqual(avatar.initials, "DL")
         XCTAssertEqual(avatarView.layer.cornerRadius, 15.0)
         XCTAssertEqual(avatarView.backgroundColor, UIColor.gray)
     }
@@ -66,20 +56,5 @@ class AvatarViewTests: XCTestCase {
         XCTAssertEqual(avatarView.backgroundColor, UIColor.gray)
         avatarView.backgroundColor = UIColor.red
         XCTAssertEqual(avatarView.backgroundColor, UIColor.red)
-    }
-
-    func testGetImage() {
-        let image = UIImage()
-        let avatar = Avatar(image: image)
-        avatarView.set(avatar: avatar)
-        XCTAssertEqual(avatarView.image, image)
-    }
-
-    func testRoundedCorners() {
-        let avatar = Avatar(image: UIImage())
-        avatarView.set(avatar: avatar)
-        XCTAssertEqual(avatarView.layer.cornerRadius, 15.0)
-        avatarView.setCorner(radius: 2)
-        XCTAssertEqual(avatarView.layer.cornerRadius, 2.0)
     }
 }

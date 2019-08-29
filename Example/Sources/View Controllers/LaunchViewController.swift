@@ -32,7 +32,7 @@ final internal class LaunchViewController: UITableViewController {
         return .lightContent
     }
 
-    let cells = ["Basic Example", "Advanced Example", "Autocomplete Example", "Embedded Example", "Settings", "Source Code", "Contributors"]
+    let cells = ["Announcement Example", "Basic Example", "Advanced Example", "Autocomplete Example", "Embedded Example", "Settings", "Source Code", "Contributors"]
     
     // MARK: - View Life Cycle
     
@@ -76,6 +76,8 @@ final internal class LaunchViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = cells[indexPath.row]
         switch cell {
+        case "Announcement Example":
+            navigationController?.pushViewController(AnnouncementExampleViewController(), animated: true)
         case "Basic Example":
             navigationController?.pushViewController(BasicExampleViewController(), animated: true)
         case "Advanced Example":

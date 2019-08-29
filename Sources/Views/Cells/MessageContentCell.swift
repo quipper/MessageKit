@@ -45,7 +45,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         label.textAlignment = .center
         return label
     }()
-    
+
     /// The bottom label of the cell.
     open var cellBottomLabel: InsetLabel = {
         let label = InsetLabel()
@@ -53,7 +53,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         label.textAlignment = .center
         return label
     }()
-    
+
     /// The top label of the messageBubble.
     open var messageTopLabel: InsetLabel = {
         let label = InsetLabel()
@@ -70,6 +70,13 @@ open class MessageContentCell: MessageCollectionViewCell {
 
     // Should only add customized subviews - don't change accessoryView itself.
     open var accessoryView: UIView = UIView()
+
+    /// The label to show the time.
+    open var timeLabel: InsetLabel = {
+        let label = InsetLabel()
+        label.numberOfLines = 1
+        return label
+    }()
 
     /// The `MessageCellDelegate` for the cell.
     open weak var delegate: MessageCellDelegate?
@@ -94,6 +101,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         contentView.addSubview(cellBottomLabel)
         contentView.addSubview(messageContainerView)
         contentView.addSubview(avatarView)
+        contentView.addSubview(timeLabel)
     }
 
     open override func prepareForReuse() {
@@ -102,6 +110,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         cellBottomLabel.text = nil
         messageTopLabel.text = nil
         messageBottomLabel.text = nil
+        timeLabel.text = nil
     }
 
     // MARK: - Configuration
@@ -117,6 +126,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         layoutMessageTopLabel(with: attributes)
         layoutAvatarView(with: attributes)
         layoutAccessoryView(with: attributes)
+        layoutTimeLabel(with: attributes)
     }
 
     /// Used to configure the cell.
@@ -149,11 +159,13 @@ open class MessageContentCell: MessageCollectionViewCell {
         let bottomCellLabelText = dataSource.cellBottomLabelAttributedText(for: message, at: indexPath)
         let topMessageLabelText = dataSource.messageTopLabelAttributedText(for: message, at: indexPath)
         let bottomMessageLabelText = dataSource.messageBottomLabelAttributedText(for: message, at: indexPath)
+        let timeLabelText = dataSource.timeLabelAttributedText(for: message, at: indexPath)
 
         cellTopLabel.attributedText = topCellLabelText
         cellBottomLabel.attributedText = bottomCellLabelText
         messageTopLabel.attributedText = topMessageLabelText
         messageBottomLabel.attributedText = bottomMessageLabelText
+        timeLabel.attributedText = timeLabelText
     }
 
     /// Handle tap gesture on contentView and its subviews.
@@ -205,6 +217,8 @@ open class MessageContentCell: MessageCollectionViewCell {
             origin.x = padding
         case .cellTrailing:
             origin.x = attributes.frame.width - attributes.avatarSize.width - padding
+        case .none:
+            break
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
@@ -217,10 +231,10 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .messageBottom: // Needs messageContainerView frame to be set
             origin.y = messageContainerView.frame.maxY - attributes.avatarSize.height
         case .messageCenter: // Needs messageContainerView frame to be set
-            origin.y = messageContainerView.frame.midY - (attributes.avatarSize.height/2)
+            origin.y = messageContainerView.frame.midY - (attributes.avatarSize.height / 2)
         case .cellBottom:
             origin.y = attributes.frame.height - attributes.avatarSize.height
-        default:
+        case .cellTop, .none:
             break
         }
 
@@ -257,6 +271,8 @@ open class MessageContentCell: MessageCollectionViewCell {
             origin.x = attributes.avatarSize.width + attributes.messageContainerPadding.left + avatarPadding
         case .cellTrailing:
             origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes.messageContainerPadding.right - avatarPadding
+        case .none:
+            origin.x = (attributes.frame.width - attributes.messageContainerSize.width) / 2.0
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
@@ -269,19 +285,19 @@ open class MessageContentCell: MessageCollectionViewCell {
     open func layoutCellTopLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
         cellTopLabel.frame = CGRect(origin: .zero, size: attributes.cellTopLabelSize)
     }
-    
+
     /// Positions the cell's bottom label.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutCellBottomLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
         cellBottomLabel.textAlignment = attributes.cellBottomLabelAlignment.textAlignment
         cellBottomLabel.textInsets = attributes.cellBottomLabelAlignment.textInsets
-        
+
         let y = messageBottomLabel.frame.maxY
         let origin = CGPoint(x: 0, y: y)
-        
+
         cellBottomLabel.frame = CGRect(origin: origin, size: attributes.cellBottomLabelSize)
     }
-    
+
     /// Positions the message bubble's top label.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutMessageTopLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
@@ -290,7 +306,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 
         let y = messageContainerView.frame.minY - attributes.messageContainerPadding.top - attributes.messageTopLabelSize.height
         let origin = CGPoint(x: 0, y: y)
-        
+
         messageTopLabel.frame = CGRect(origin: origin, size: attributes.messageTopLabelSize)
     }
 
@@ -309,9 +325,8 @@ open class MessageContentCell: MessageCollectionViewCell {
     /// Positions the cell's accessory view.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutAccessoryView(with attributes: MessagesCollectionViewLayoutAttributes) {
-        
         var origin: CGPoint = .zero
-        
+
         // Accessory view is set at the side space of the messageContainerView
         switch attributes.accessoryViewPosition {
         case .messageLabelTop:
@@ -329,15 +344,45 @@ open class MessageContentCell: MessageCollectionViewCell {
         }
 
         // Accessory view is always on the opposite side of avatar
+
         switch attributes.avatarPosition.horizontal {
         case .cellLeading:
             origin.x = messageContainerView.frame.maxX + attributes.accessoryViewPadding.left
         case .cellTrailing:
             origin.x = messageContainerView.frame.minX - attributes.accessoryViewPadding.right - attributes.accessoryViewSize.width
+        case .none:
+            break
+        case .natural:
+            fatalError(MessageKitError.avatarPositionUnresolved)
+        }
+        accessoryView.frame = CGRect(origin: origin, size: attributes.accessoryViewSize)
+    }
+
+    /// Positions the time label.
+    /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
+    open func layoutTimeLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
+        timeLabel.textAlignment = attributes.timeLabelAlignment.textAlignment
+        timeLabel.textInsets = attributes.timeLabelAlignment.textInsets
+
+        var origin: CGPoint = .zero
+
+        let timeLabelWidth = attributes.timeLabelSize.width
+        let timeLabelHeight = attributes.timeLabelSize.height
+
+        switch attributes.avatarPosition.horizontal {
+        case .cellLeading:
+            origin.x = messageContainerView.frame.maxX
+            origin.y = messageContainerView.frame.maxY - timeLabelHeight
+        case .cellTrailing:
+            origin.x = messageContainerView.frame.minX - timeLabelWidth
+            origin.y = messageContainerView.frame.maxY - timeLabelHeight
+        case .none:
+            origin.x = messageContainerView.frame.maxX - timeLabelWidth
+            origin.y = messageContainerView.frame.maxY
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
 
-        accessoryView.frame = CGRect(origin: origin, size: attributes.accessoryViewSize)
+        timeLabel.frame = CGRect(origin: origin, size: attributes.timeLabelSize)
     }
 }

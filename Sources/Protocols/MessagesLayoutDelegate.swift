@@ -77,7 +77,7 @@ public protocol MessagesLayoutDelegate: AnyObject {
     /// - Note:
     ///   The default value returned by this method is zero.
     func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat
-    
+
     /// Specifies the height for the `MessageContentCell`'s bottom label.
     ///
     /// - Parameters:
@@ -88,7 +88,7 @@ public protocol MessagesLayoutDelegate: AnyObject {
     /// - Note:
     ///   The default value returned by this method is zero.
     func cellBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat
-    
+
     /// Specifies the height for the message bubble's top label.
     ///
     /// - Parameters:
@@ -110,7 +110,10 @@ public protocol MessagesLayoutDelegate: AnyObject {
     /// - Note:
     ///   The default value returned by this method is zero.
     func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat
-    
+
+    /// Specifies the height for the time label.
+    func timeLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat
+
     /// Custom cell size calculator for messages with MessageType.custom.
     ///
     /// - Parameters:
@@ -144,11 +147,11 @@ public extension MessagesLayoutDelegate {
     func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 0
     }
-    
+
     func cellBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 0
     }
-    
+
     func messageTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 0
     }
@@ -156,7 +159,11 @@ public extension MessagesLayoutDelegate {
     func messageBottomLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 0
     }
-    
+
+    func timeLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        return 0
+    }
+
     func customCellSizeCalculator(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator {
         fatalError("Must return a CellSizeCalculator for MessageKind.custom(Any?)")
     }

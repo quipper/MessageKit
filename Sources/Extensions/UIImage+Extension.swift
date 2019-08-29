@@ -39,5 +39,5 @@ public extension UIImage {
         let image = UIImage(contentsOfFile: imagePath ?? "")
         return image
     }
-    
+
 }

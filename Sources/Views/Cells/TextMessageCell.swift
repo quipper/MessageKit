@@ -77,7 +77,7 @@ open class TextMessageCell: MessageContentCell {
                 messageLabel.setAttributes(attributes, detector: detector)
             }
             switch message.kind {
-            case .text(let text), .emoji(let text):
+            case .text(let text), .emoji(let text), .announcement(let text):
                 let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
                 messageLabel.text = text
                 messageLabel.textColor = textColor
@@ -91,7 +91,7 @@ open class TextMessageCell: MessageContentCell {
             }
         }
     }
-    
+
     /// Used to handle the cell's contentView's tap gesture.
     /// Return false when the contentView does not need to handle the gesture.
     open override func cellContentView(canHandle touchPoint: CGPoint) -> Bool {

@@ -97,7 +97,6 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
         setupConstraints()
         setupDelegates()
         addMenuControllerObservers()
-        addObservers()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
@@ -137,8 +136,6 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     deinit {
         removeKeyboardObservers()
         removeMenuControllerObservers()
-        removeObservers()
-        clearMemoryCache()
     }
 
     // MARK: - Methods [Private]
@@ -274,7 +271,7 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
         let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
 
         switch message.kind {
-        case .text, .attributedText, .emoji:
+        case .text, .attributedText, .emoji, .announcement:
             let cell = messagesCollectionView.dequeueReusableCell(TextMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
@@ -400,20 +397,5 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
         default:
             break
         }
-    }
-
-    // MARK: - Helpers
-    
-    private func addObservers() {
-        NotificationCenter.default.addObserver(
-            self, selector: #selector(clearMemoryCache), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
-    }
-    
-    private func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
-    }
-    
-    @objc private func clearMemoryCache() {
-        MessageStyle.bubbleImageCache.removeAllObjects()
     }
 }

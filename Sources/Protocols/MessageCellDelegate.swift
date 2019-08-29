@@ -1,18 +1,18 @@
 /*
  MIT License
- 
+
  Copyright (c) 2017-2019 MessageKit
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -68,7 +68,7 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     /// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
     /// method `messageForItem(at:indexPath:messagesCollectionView)`.
     func didTapCellTopLabel(in cell: MessageCollectionViewCell)
-    
+
     /// Triggered when a tap occurs in the cellBottomLabel.
     ///
     /// - Parameters:
@@ -78,7 +78,7 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     /// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
     /// method `messageForItem(at:indexPath:messagesCollectionView)`.
     func didTapCellBottomLabel(in cell: MessageCollectionViewCell)
-    
+
     /// Triggered when a tap occurs in the messageTopLabel.
     ///
     /// - Parameters:
@@ -98,7 +98,14 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     /// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
     /// method `messageForItem(at:indexPath:messagesCollectionView)`.
     func didTapMessageBottomLabel(in cell: MessageCollectionViewCell)
-    
+
+    /// Triggered when a tap occurs in the accessoryView.
+    ///
+    /// - Parameters:
+    ///   - cell: The cell where the tap occurred.
+    ///
+    /// You can get a reference to the `MessageType` for the cell by using `UICollectionView`'s
+
     /// Triggered when a tap occurs in the accessoryView.
     ///
     /// - Parameters:
@@ -160,7 +167,7 @@ public extension MessageCellDelegate {
     func didTapAvatar(in cell: MessageCollectionViewCell) {}
 
     func didTapCellTopLabel(in cell: MessageCollectionViewCell) {}
-    
+
     func didTapCellBottomLabel(in cell: MessageCollectionViewCell) {}
 
     func didTapMessageTopLabel(in cell: MessageCollectionViewCell) {}
@@ -174,7 +181,7 @@ public extension MessageCellDelegate {
     func didStopAudio(in cell: AudioMessageCell) {}
 
     func didTapMessageBottomLabel(in cell: MessageCollectionViewCell) {}
-    
-    func didTapAccessoryView(in cell: MessageCollectionViewCell) {}
 
+    func didTapAccessoryView(in cell: MessageCollectionViewCell) {}
+    
 }

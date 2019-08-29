@@ -31,12 +31,12 @@ final class AvatarSpec: QuickSpec {
     override func spec() {
         describe("default property values") {
             context("after intialization") {
-                let avatar = Avatar()
+                let avatar = Avatar(image: nil)
                 it("should set image to nil") {
                     expect(avatar.image).to(beNil())
                 }
-                it("should set initials to ?") {
-                    expect(avatar.initials).to(equal("?"))
+                it("should set initials to empty string") {
+                    expect(avatar.initials).to(be(""))
                 }
             }
         }

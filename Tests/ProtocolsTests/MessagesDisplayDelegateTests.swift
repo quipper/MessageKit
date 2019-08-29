@@ -102,7 +102,7 @@ class MessagesDisplayDelegateTests: XCTestCase {
 
         let result: Bool
         switch type {
-        case .bubble:
+        case .none:
             result = true
         default:
             result = false

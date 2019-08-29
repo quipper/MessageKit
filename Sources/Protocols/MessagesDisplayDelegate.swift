@@ -1,18 +1,18 @@
 /*
  MIT License
- 
+
  Copyright (c) 2017-2019 MessageKit
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -71,7 +71,7 @@ public protocol MessagesDisplayDelegate: AnyObject {
     ///   - indexPath: The `IndexPath` of the footer.
     ///   - messagesCollectionView: The `MessagesCollectionView` in which this footer will be displayed.
     func messageFooterView(for indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageReusableView
-    
+
     /// Used to configure the `AvatarView`‘s image in a `MessageContentCell` class.
     ///
     /// - Parameters:
@@ -174,7 +174,7 @@ public protocol MessagesDisplayDelegate: AnyObject {
     func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
 
     // MARK: - Audio Message
-    
+
     /// Used to configure the audio cell UI:
     ///     1. play button selected state;
     ///     2. progresssView progress;
@@ -212,7 +212,6 @@ public protocol MessagesDisplayDelegate: AnyObject {
     ///     2. return the time as m:ss if duration is greater than 59 and lower than 3600      (e.g. 12:23    means 12 mintues and 23 seconds)
     ///     3. return the time as h:mm:ss for anything longer that 3600 seconds                (e.g. 1:19:08  means 1 hour 19 minutes and 8 seconds)
     func audioProgressTextFormat(_ duration: Float, for audioCell: AudioMessageCell, in messageCollectionView: MessagesCollectionView) -> String
-
 }
 
 public extension MessagesDisplayDelegate {
@@ -220,20 +219,19 @@ public extension MessagesDisplayDelegate {
     // MARK: - All Messages Defaults
 
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
-        return .bubble
+        return .none
     }
 
     func backgroundColor(for message: MessageType, at  indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-
         switch message.kind {
         case .emoji:
             return .clear
         default:
             guard let dataSource = messagesCollectionView.messagesDataSource else { return .white }
-            return dataSource.isFromCurrentSender(message: message) ? .outgoingGreen : .incomingGray
+            return dataSource.isFromCurrentSender(message: message) ? UIColor.outgoingGreen : UIColor.incomingGray
         }
     }
-    
+
     func messageHeaderView(for indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageReusableView {
         return messagesCollectionView.dequeueReusableHeaderView(MessageReusableView.self, for: indexPath)
     }
@@ -241,10 +239,8 @@ public extension MessagesDisplayDelegate {
     func messageFooterView(for indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageReusableView {
         return messagesCollectionView.dequeueReusableFooterView(MessageReusableView.self, for: indexPath)
     }
-    
-    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        avatarView.initials = "?"
-    }
+
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {}
 
     func configureAccessoryView(_ accessoryView: UIView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {}
 
@@ -285,11 +281,11 @@ public extension MessagesDisplayDelegate {
     }
 
     // MARK: - Audio Message Defaults
-    
-    func configureAudioCell(_ cell: AudioMessageCell, message: MessageType) {
-        
-    }
 
+    func configureAudioCell(_ cell: AudioMessageCell, message: MessageType) {
+
+    }
+    
     func audioTintColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         return UIColor.sendButtonBlue
     }
@@ -310,5 +306,4 @@ public extension MessagesDisplayDelegate {
         }
         return retunValue
     }
-
 }

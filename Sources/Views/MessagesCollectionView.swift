@@ -1,18 +1,18 @@
 /*
  MIT License
- 
+
  Copyright (c) 2017-2019 MessageKit
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -54,16 +54,17 @@ open class MessagesCollectionView: UICollectionView {
     }
 
     // MARK: - Initializers
-
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         backgroundColor = .white
         registerReusableViews()
         setupGestureRecognizers()
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
-        super.init(frame: .zero, collectionViewLayout: MessagesCollectionViewFlowLayout())
+        super.init(coder: aDecoder)
+        registerReusableViews()
+        setupGestureRecognizers()
     }
 
     public convenience init() {
@@ -71,7 +72,7 @@ open class MessagesCollectionView: UICollectionView {
     }
 
     // MARK: - Methods
-    
+
     private func registerReusableViews() {
         register(TextMessageCell.self)
         register(MediaMessageCell.self)
@@ -82,20 +83,20 @@ open class MessagesCollectionView: UICollectionView {
         register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader)
         register(MessageReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter)
     }
-    
+
     private func setupGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
         tapGesture.delaysTouchesBegan = true
         addGestureRecognizer(tapGesture)
     }
-    
+
     @objc
     open func handleTapGesture(_ gesture: UIGestureRecognizer) {
         guard gesture.state == .ended else { return }
-        
+
         let touchLocation = gesture.location(in: self)
         guard let indexPath = indexPathForItem(at: touchLocation) else { return }
-        
+
         let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
         cell?.handleTapGesture(gesture)
     }
@@ -103,21 +104,23 @@ open class MessagesCollectionView: UICollectionView {
     public func scrollToBottom(animated: Bool = false) {
         let collectionViewContentHeight = collectionViewLayout.collectionViewContentSize.height
 
-        performBatchUpdates(nil) { _ in
-            self.scrollRectToVisible(CGRect(0.0, collectionViewContentHeight - 1.0, 1.0, 1.0), animated: animated)
+        performBatchUpdates(nil) { [weak self] _ in
+            self?.scrollRectToVisible(CGRect(x: 0.0, y: collectionViewContentHeight - 1.0,
+                                             width: 1.0, height: 1.0),
+                                      animated: animated)
         }
     }
-    
+
     public func reloadDataAndKeepOffset() {
         // stop scrolling
         setContentOffset(contentOffset, animated: false)
-        
+
         // calculate the offset and reloadData
         let beforeContentSize = contentSize
         reloadData()
         layoutIfNeeded()
         let afterContentSize = contentSize
-        
+
         // reset the contentOffset after data is updated
         let newOffset = CGPoint(
             x: contentOffset.x + (afterContentSize.width - beforeContentSize.width),
@@ -134,7 +137,7 @@ open class MessagesCollectionView: UICollectionView {
     internal func setTypingIndicatorViewHidden(_ isHidden: Bool) {
         messagesCollectionViewFlowLayout.setTypingIndicatorViewHidden(isHidden)
     }
-    
+
     /// A method that by default checks if the section is the last in the
     /// `messagesCollectionView` and that `isTypingIndicatorViewHidden`
     /// is FALSE
@@ -158,12 +161,12 @@ open class MessagesCollectionView: UICollectionView {
                  forSupplementaryViewOfKind: kind,
                  withReuseIdentifier: String(describing: T.self))
     }
-    
+
     /// Registers a nib with reusable view for a specific SectionKind
     public func register<T: UICollectionReusableView>(_ nib: UINib? = UINib(nibName: String(describing: T.self), bundle: nil), headerFooterClassOfNib headerFooterClass: T.Type, forSupplementaryViewOfKind kind: String) {
         register(nib,
                  forSupplementaryViewOfKind: kind,
-                 withReuseIdentifier: String(describing: T.self))        
+                 withReuseIdentifier: String(describing: T.self))
     }
 
     /// Generically dequeues a cell of the correct type allowing you to avoid scattering your code with guard-let-else-fatal
@@ -191,5 +194,4 @@ open class MessagesCollectionView: UICollectionView {
         }
         return viewType
     }
-
 }
