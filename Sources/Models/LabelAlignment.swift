@@ -28,7 +28,7 @@ public struct LabelAlignment: Equatable {
 
     public var textAlignment: NSTextAlignment
     public var textInsets: UIEdgeInsets
-
+    
     public init(textAlignment: NSTextAlignment, textInsets: UIEdgeInsets) {
         self.textAlignment = textAlignment
         self.textInsets = textInsets

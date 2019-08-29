@@ -45,7 +45,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         label.textAlignment = .center
         return label
     }()
-
+    
     /// The bottom label of the cell.
     open var cellBottomLabel: InsetLabel = {
         let label = InsetLabel()
@@ -53,7 +53,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         label.textAlignment = .center
         return label
     }()
-
+    
     /// The top label of the messageBubble.
     open var messageTopLabel: InsetLabel = {
         let label = InsetLabel()
@@ -231,7 +231,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .messageBottom: // Needs messageContainerView frame to be set
             origin.y = messageContainerView.frame.maxY - attributes.avatarSize.height
         case .messageCenter: // Needs messageContainerView frame to be set
-            origin.y = messageContainerView.frame.midY - (attributes.avatarSize.height / 2)
+            origin.y = messageContainerView.frame.midY - (attributes.avatarSize.height/2)
         case .cellBottom:
             origin.y = attributes.frame.height - attributes.avatarSize.height
         case .cellTop, .none:
@@ -272,7 +272,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .cellTrailing:
             origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes.messageContainerPadding.right - avatarPadding
         case .none:
-            origin.x = (attributes.frame.width - attributes.messageContainerSize.width) / 2.0
+            origin.x = (attributes.frame.width - attributes.messageContainerSize.width)/2
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
@@ -285,19 +285,19 @@ open class MessageContentCell: MessageCollectionViewCell {
     open func layoutCellTopLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
         cellTopLabel.frame = CGRect(origin: .zero, size: attributes.cellTopLabelSize)
     }
-
+    
     /// Positions the cell's bottom label.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutCellBottomLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
         cellBottomLabel.textAlignment = attributes.cellBottomLabelAlignment.textAlignment
         cellBottomLabel.textInsets = attributes.cellBottomLabelAlignment.textInsets
-
+        
         let y = messageBottomLabel.frame.maxY
         let origin = CGPoint(x: 0, y: y)
-
+        
         cellBottomLabel.frame = CGRect(origin: origin, size: attributes.cellBottomLabelSize)
     }
-
+    
     /// Positions the message bubble's top label.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutMessageTopLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
@@ -325,8 +325,9 @@ open class MessageContentCell: MessageCollectionViewCell {
     /// Positions the cell's accessory view.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutAccessoryView(with attributes: MessagesCollectionViewLayoutAttributes) {
+        
         var origin: CGPoint = .zero
-
+        
         // Accessory view is set at the side space of the messageContainerView
         switch attributes.accessoryViewPosition {
         case .messageLabelTop:
@@ -344,7 +345,6 @@ open class MessageContentCell: MessageCollectionViewCell {
         }
 
         // Accessory view is always on the opposite side of avatar
-
         switch attributes.avatarPosition.horizontal {
         case .cellLeading:
             origin.x = messageContainerView.frame.maxX + attributes.accessoryViewPadding.left

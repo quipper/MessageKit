@@ -55,7 +55,7 @@ open class MediaMessageCell: MessageContentCell {
         messageContainerView.addSubview(playButtonView)
         setupConstraints()
     }
-
+    
     open override func prepareForReuse() {
         super.prepareForReuse()
         self.imageView.image = nil
@@ -75,7 +75,6 @@ open class MediaMessageCell: MessageContentCell {
         case .video(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             playButtonView.isHidden = false
-
         default:
             break
         }
