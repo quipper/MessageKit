@@ -13,16 +13,9 @@ class AnnouncementExampleViewController: MessagesViewController {
         return .lightContent
     }
 
-    var conversationMessages: [ConversationMessage] = []
-
-    private var _dateFormatter: DateFormatter?
-    var dateFormatter: DateFormatter {
-        guard let formatter = _dateFormatter else {
-            _dateFormatter = DateFormatter()
-            return _dateFormatter!
-        }
-        return formatter
-    }
+    private var conversationMessages: [ConversationMessage] = []
+    
+    private lazy var dateFormatter = DateFormatter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,7 +100,7 @@ class AnnouncementExampleViewController: MessagesViewController {
 
 extension AnnouncementExampleViewController: MessagesDataSource {
     func currentSender() -> SenderType {
-        return User.me()
+        return User.me
     }
 
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
@@ -266,11 +259,11 @@ extension AnnouncementExampleViewController: MessageCellDelegate {
     func didTapMessage(in cell: MessageCollectionViewCell) {
         guard let indexPath = messagesCollectionView.indexPath(for: cell),
             let message = messagesCollectionView.messagesDataSource?.messageForItem(at: indexPath, in: messagesCollectionView) else { return }
-        print("didTapMessage \(message.messageId)")
+        print("message selected: \(message.messageId)")
     }
 
     func didSelectURL(_ url: URL) {
-        print("url selected")
+        print("url selected: \(url.absoluteString)")
     }
 }
 
@@ -293,8 +286,8 @@ extension UICollectionView {
 
 enum ConversationMessageMockFactory {
     static func getConversations() -> [ConversationMessage] {
-        let me = User.me()
-        let other = User.other()
+        let me = User.me
+        let other = User.other
         return [
             ConversationMessage(sender: other,
                                 text: "First announcement",
@@ -320,11 +313,11 @@ enum ConversationMessageMockFactory {
 }
 
 struct ConversationMessage {
-    var sender: User
-    var text: String?
-    var image: UIImage?
-    var createdTs: TimeInterval
-    var isAnnouncement: Bool = false
+    let sender: User
+    let text: String?
+    let image: UIImage?
+    let createdTs: TimeInterval
+    let isAnnouncement: Bool
 
     init(sender: User, text: String? = nil, image: UIImage? = nil,
          createdTs: TimeInterval, isAnnouncement: Bool = false) {
@@ -337,28 +330,23 @@ struct ConversationMessage {
 }
 
 struct MediaItemImpl: MediaItem {
-    var url: URL?
-    var image: UIImage?
-    var placeholderImage: UIImage
-    var size: CGSize
+    let url: URL?
+    let image: UIImage?
+    let placeholderImage: UIImage
+    let size: CGSize
 }
 
 struct User: SenderType {
-    var senderId: String
-    var displayName: String
+    let senderId: String
+    let displayName: String
 
-    static func me() -> User {
-        return User(senderId: "me", displayName: "my user")
-    }
-
-    static func other() -> User {
-        return User(senderId: "other", displayName: "other user")
-    }
+    static let me = User(senderId: "me", displayName: "my user")
+    static let other = User(senderId: "other", displayName: "other user")
 }
 
 struct MessageDisplaySource: MessageType {
-    var sender: SenderType
-    var messageId: String
-    var sentDate: Date
-    var kind: MessageKind
+    let sender: SenderType
+    let messageId: String
+    let sentDate: Date
+    let kind: MessageKind
 }

@@ -58,7 +58,7 @@ open class MessageContainerView: UIImageView {
         case .rightBubble:
             roundingCorners = [.topLeft, .bottomLeft, .bottomRight]
         default:
-            fatalError("This style never call this function.")
+            fatalError("This style never calls this function.")
         }
 
         let maskPath = UIBezierPath(roundedRect: roundedRect,

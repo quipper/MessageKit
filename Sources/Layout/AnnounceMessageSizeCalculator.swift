@@ -14,8 +14,7 @@ open class AnnouncementMessageSizeCalculator: MessageSizeCalculator {
     
     public let messageLabelInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
     public let messageContainerInsets = UIEdgeInsets(top: 0, left: 16 * 2, bottom: 0, right: 16 * 2)
-    
-    public var timeLabelAlignment = LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(right: 8))
+    public var timeLabelAlignment = LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8))
     
     // AnnoucementMessage doesn't need avatar
     public let avatarPosition = AvatarPosition(horizontal: .none, vertical: .none)
@@ -87,10 +86,4 @@ open class AnnouncementMessageSizeCalculator: MessageSizeCalculator {
         return avatarPosition
     }
     
-}
-
-fileprivate extension UIEdgeInsets {
-    init(top: CGFloat = 0, bottom: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0) {
-        self.init(top: top, left: left, bottom: bottom, right: right)
-    }
 }
