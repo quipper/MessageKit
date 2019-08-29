@@ -306,7 +306,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 
         let y = messageContainerView.frame.minY - attributes.messageContainerPadding.top - attributes.messageTopLabelSize.height
         let origin = CGPoint(x: 0, y: y)
-
+        
         messageTopLabel.frame = CGRect(origin: origin, size: attributes.messageTopLabelSize)
     }
 
@@ -355,6 +355,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .natural:
             fatalError(MessageKitError.avatarPositionUnresolved)
         }
+
         accessoryView.frame = CGRect(origin: origin, size: attributes.accessoryViewSize)
     }
 

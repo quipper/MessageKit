@@ -326,10 +326,10 @@ final class MessageLabelSpec: QuickSpec {
     /**
      Takes a given `DetectorType` and extract matches from a `MessageLabel`
 
-     Parameters: detector: `DetectorType` that you want to extract
-     Parameters: label: `MessageLabel` where you want to get matches
+     - Parameters: detector: `DetectorType` that you want to extract
+     - Parameters: label: `MessageLabel` where you want to get matches
 
-     Returns: an array of `String` that contains all matches for the given detector
+     - Returns: an array of `String` that contains all matches for the given detector
      */
     private func extractCustomDetectors(for detector: DetectorType, with label: MessageLabel) -> [String] {
         guard let detection = label.rangesForDetectors[detector] else { return [] }
@@ -346,10 +346,10 @@ final class MessageLabelSpec: QuickSpec {
     /**
      Simply set text, detectors and attriutes to a given label
 
-     Parameters: text: `String` that will be applied to the label
-     Parameters: detector: `DetectorType` that you want to apply to the label
-     Parameters: attributes: `[NSAttributedString.Key: Any]` that you want to apply to the label
-     Parameters: label: `MessageLabel` that takes the previous parameters
+     - Parameters: text: `String` that will be applied to the label
+     - Parameters: detector: `DetectorType` that you want to apply to the label
+     - Parameters: attributes: `[NSAttributedString.Key: Any]` that you want to apply to the label
+     - Parameters: label: `MessageLabel` that takes the previous parameters
 
      */
     private func set(text: String, and detectors: [DetectorType], with attributes: [NSAttributedString.Key: Any], to label: MessageLabel) {
