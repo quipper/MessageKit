@@ -166,6 +166,8 @@ open class MessageContentCell: MessageCollectionViewCell {
         messageTopLabel.attributedText = topMessageLabelText
         messageBottomLabel.attributedText = bottomMessageLabelText
         timeLabel.attributedText = timeLabelText
+
+        displayDelegate.configureContainerView(messageContainerView, for: message, at: indexPath, in: messagesCollectionView)
     }
 
     /// Handle tap gesture on contentView and its subviews.
