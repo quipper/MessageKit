@@ -68,6 +68,9 @@ open class MessageContentCell: MessageCollectionViewCell {
         return label
     }()
 
+    /// The bottom view of the cellBottomLabel.
+    open var cellBottomView: UIView = UIView()
+
     // Should only add customized subviews - don't change accessoryView itself.
     open var accessoryView: UIView = UIView()
 
@@ -99,6 +102,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         contentView.addSubview(messageTopLabel)
         contentView.addSubview(messageBottomLabel)
         contentView.addSubview(cellBottomLabel)
+        contentView.addSubview(cellBottomView)
         contentView.addSubview(messageContainerView)
         contentView.addSubview(avatarView)
         contentView.addSubview(timeLabel)
@@ -124,6 +128,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         layoutCellBottomLabel(with: attributes)
         layoutCellTopLabel(with: attributes)
         layoutMessageTopLabel(with: attributes)
+        layoutCellBottomView(with: attributes)
         layoutAvatarView(with: attributes)
         layoutAccessoryView(with: attributes)
         layoutTimeLabel(with: attributes)
@@ -147,6 +152,8 @@ open class MessageContentCell: MessageCollectionViewCell {
 
         let messageColor = displayDelegate.backgroundColor(for: message, at: indexPath, in: messagesCollectionView)
         let messageStyle = displayDelegate.messageStyle(for: message, at: indexPath, in: messagesCollectionView)
+
+        displayDelegate.configureCellBottomView(cellBottomView, for: message, at: indexPath, in: messagesCollectionView)
 
         displayDelegate.configureAvatarView(avatarView, for: message, at: indexPath, in: messagesCollectionView)
 
@@ -250,7 +257,8 @@ open class MessageContentCell: MessageCollectionViewCell {
 
         switch attributes.avatarPosition.vertical {
         case .messageBottom:
-            origin.y = attributes.size.height - attributes.messageContainerPadding.bottom - attributes.cellBottomLabelSize.height - attributes.messageBottomLabelSize.height - attributes.messageContainerSize.height - attributes.messageContainerPadding.top
+            origin.y = attributes.size.height - attributes.messageContainerPadding.bottom - attributes.cellBottomLabelSize.height - attributes.messageBottomLabelSize.height - attributes.messageContainerSize.height - attributes.messageContainerPadding.top - attributes.cellBottomViewSize.height
+
         case .messageCenter:
             if attributes.avatarSize.height > attributes.messageContainerSize.height {
                 let messageHeight = attributes.messageContainerSize.height + attributes.messageContainerPadding.vertical
@@ -323,6 +331,17 @@ open class MessageContentCell: MessageCollectionViewCell {
 
         messageBottomLabel.frame = CGRect(origin: origin, size: attributes.messageBottomLabelSize)
     }
+
+    /// Positions the cell's bottom view.
+    /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
+    open func layoutCellBottomView(with attributes: MessagesCollectionViewLayoutAttributes) {
+        let x = messageContainerView.frame.maxX - attributes.cellBottomViewSize.width
+        let y = cellBottomLabel.frame.maxY
+        let origin = CGPoint(x: x, y: y)
+
+        cellBottomView.frame = CGRect(origin: origin, size: attributes.cellBottomViewSize)
+    }
+
 
     /// Positions the cell's accessory view.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
