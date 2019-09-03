@@ -17,13 +17,28 @@ class AnnouncementExampleViewController: MessagesViewController {
     
     private lazy var dateFormatter = DateFormatter()
 
+    private let failedLabelWidth: CGFloat = 168
+    private let deleteButtonWidth: CGFloat = 40
+    private let retryButtonWidth: CGFloat = 40
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeUI()
+
+        configureMessageCollectionView()
         conversationMessages = ConversationMessageMockFactory.getConversations()
     }
 
-    private func initializeUI() {
+    func configureMessageCollectionView() {
+
+        let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout
+        layout?.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
+
+        layout?.setMessageOutgoingAvatarSize(CGSize(width: 20, height: 20))
+        layout?.setMessageOutgoingAvatarPosition(.init(horizontal: .cellTrailing, vertical: .messageBottom))
+        layout?.setMessageOutgoingMessagePadding(.init(top: 0, left: 0, bottom: 0, right: 10))
+
+        layout?.setMessageOutgoingCellBottomViewSize(CGSize(width: failedLabelWidth + deleteButtonWidth + retryButtonWidth, height: 24))
+
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messageCellDelegate = self
@@ -172,6 +187,45 @@ extension AnnouncementExampleViewController: MessagesDisplayDelegate {
         return 20
     }
 
+    func configureCellBottomView(_ cellBottomView: UIView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        cellBottomView.subviews.forEach { $0.removeFromSuperview() }
+        guard currentSender().senderId == conversationMessages[indexPath.row].sender.senderId else {
+            return
+        }
+
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.text = "failed to send the message"
+        label.textColor = .lightGray
+
+        let deleteButton = UIButton()
+        deleteButton.setAttributedTitle(NSAttributedString(string: "delete", attributes: [.font: UIFont.systemFont(ofSize: 13.0), .foregroundColor: UIColor.purple]), for: .normal)
+        deleteButton.addTarget(self, action: #selector(didTapDelete(sender:)), for: .touchUpInside)
+        deleteButton.tag = indexPath.row
+
+        let retryButton = UIButton()
+        retryButton.setAttributedTitle(NSAttributedString(string: "retry", attributes: [.font: UIFont.systemFont(ofSize: 13.0), .foregroundColor: UIColor.blue]), for: .normal)
+        retryButton.addTarget(self, action: #selector(didTapRetry(sender:)), for: .touchUpInside)
+        retryButton.tag = indexPath.row
+
+        cellBottomView.addSubview(label)
+        cellBottomView.addSubview(deleteButton)
+        cellBottomView.addSubview(retryButton)
+
+        let height = cellBottomView.bounds.height
+        label.frame = CGRect(x: 0, y: 0, width: failedLabelWidth, height: height)
+        deleteButton.frame = CGRect(x: failedLabelWidth, y: 0, width: deleteButtonWidth, height: height)
+        retryButton.frame = CGRect(x: failedLabelWidth + deleteButtonWidth, y: 0, width: retryButtonWidth, height: height)
+    }
+
+    @objc func didTapDelete(sender: UIButton) {
+        print("didTapDelete index: \(sender.tag)")
+    }
+
+    @objc func didTapRetry(sender: UIButton) {
+        print("didTapRetry index: \(sender.tag)")
+    }
+
     func configureContainerView(_ containerView: MessageContainerView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         let conversationMessage = conversationMessages[indexPath.row]
         if conversationMessage.isWarning {
@@ -180,6 +234,25 @@ extension AnnouncementExampleViewController: MessagesDisplayDelegate {
             containerView.layer.borderWidth = 1
             containerView.layer.mask = nil
         }
+    }
+
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        guard !isFromCurrentSender(message: message) else {
+            avatarView.backgroundColor = .black
+            avatarView.layer.cornerRadius = 0
+            return
+        }
+
+        guard conversationMessages.count > indexPath.row else { fatalError("message couldn't find") }
+        let conversationMessage = conversationMessages[indexPath.row]
+        guard shouldShowSenderInfo(for: message, at: indexPath), !conversationMessage.isAnnouncement else {
+            avatarView.isHidden = true
+            return
+        }
+        avatarView.isHidden = false
+
+        let avatar = Avatar(image: nil, initials: "S")
+        avatarView.set(avatar: avatar)
     }
 }
 
@@ -233,21 +306,6 @@ extension AnnouncementExampleViewController: MessagesLayoutDelegate {
         } else {
             return  isFromCurrentSender(message: message) ? .rightBubble : .leftBubble
         }
-    }
-
-    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        guard !isFromCurrentSender(message: message) else { return }
-
-        guard conversationMessages.count > indexPath.row else { fatalError("message couldn't find") }
-        let conversationMessage = conversationMessages[indexPath.row]
-        guard shouldShowSenderInfo(for: message, at: indexPath), !conversationMessage.isAnnouncement else {
-            avatarView.isHidden = true
-            return
-        }
-        avatarView.isHidden = false
-
-        let avatar = Avatar(image: nil, initials: "S")
-        avatarView.set(avatar: avatar)
     }
 
     func didSelectMessage(at indexPath: IndexPath, message: MessageType) {
@@ -316,6 +374,9 @@ enum ConversationMessageMockFactory {
                                 createdTs: Date().timeIntervalSince1970),
             ConversationMessage(sender: other,
                                 image: UIImage(named: "img1"),
+                                createdTs: Date().timeIntervalSince1970),
+            ConversationMessage(sender: me,
+                                text: "Thanks",
                                 createdTs: Date().timeIntervalSince1970),
             ConversationMessage(sender: other,
                                 text: "Last announcement",
