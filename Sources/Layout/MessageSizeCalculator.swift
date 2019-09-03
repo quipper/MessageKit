@@ -58,6 +58,9 @@ open class MessageSizeCalculator: CellSizeCalculator {
     public var incomingAccessoryViewSize = CGSize.zero
     public var outgoingAccessoryViewSize = CGSize.zero
 
+    public var incomingCellBottomViewSize = CGSize.zero
+    public var outgoingCellBottomViewSize = CGSize.zero
+
     public var incomingAccessoryViewPadding = HorizontalEdgeInsets.zero
     public var outgoingAccessoryViewPadding = HorizontalEdgeInsets.zero
     
@@ -89,6 +92,8 @@ open class MessageSizeCalculator: CellSizeCalculator {
         attributes.messageBottomLabelAlignment = messageBottomLabelAlignment(for: message)
         attributes.messageBottomLabelSize = messageBottomLabelSize(for: message, at: indexPath)
 
+        attributes.cellBottomViewSize = cellBottomViewSize(for: message)
+
         attributes.accessoryViewSize = accessoryViewSize(for: message)
         attributes.accessoryViewPadding = accessoryViewPadding(for: message)
         attributes.accessoryViewPosition = accessoryViewPosition(for: message)
@@ -112,6 +117,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let cellTopLabelHeight = cellTopLabelSize(for: message, at: indexPath).height
         let messageTopLabelHeight = messageTopLabelSize(for: message, at: indexPath).height
         let messageVerticalPadding = messageContainerPadding(for: message).vertical
+        let cellBottomViewHeight = cellBottomViewSize(for: message).height
         let avatarHeight = avatarSize(for: message).height
         let avatarVerticalPosition = avatarPosition(for: message).vertical
         let accessoryViewHeight = accessoryViewSize(for: message).height
@@ -121,32 +127,34 @@ open class MessageSizeCalculator: CellSizeCalculator {
             let totalLabelHeight: CGFloat = cellTopLabelHeight + messageTopLabelHeight
                 + messageContainerHeight + messageVerticalPadding + messageBottomLabelHeight + cellBottomLabelHeight
             let cellHeight = max(avatarHeight, totalLabelHeight)
-            return max(cellHeight, accessoryViewHeight)
+            return max(cellHeight, accessoryViewHeight) + cellBottomViewHeight
         case .messageBottom:
             var cellHeight: CGFloat = 0
             cellHeight += messageBottomLabelHeight
             cellHeight += cellBottomLabelHeight
             let labelsHeight = messageContainerHeight + messageVerticalPadding + cellTopLabelHeight + messageTopLabelHeight
             cellHeight += max(labelsHeight, avatarHeight)
-            return max(cellHeight, accessoryViewHeight)
+            return max(cellHeight, accessoryViewHeight) + cellBottomViewHeight
         case .messageTop:
             var cellHeight: CGFloat = 0
             cellHeight += cellTopLabelHeight
             cellHeight += messageTopLabelHeight
             let labelsHeight = messageContainerHeight + messageVerticalPadding + messageBottomLabelHeight + cellBottomLabelHeight
             cellHeight += max(labelsHeight, avatarHeight)
-            return max(cellHeight, accessoryViewHeight)
+            return max(cellHeight, accessoryViewHeight) + cellBottomViewHeight
         case .messageLabelTop:
             var cellHeight: CGFloat = 0
             cellHeight += cellTopLabelHeight
-            let messageLabelsHeight = messageContainerHeight + messageBottomLabelHeight + messageVerticalPadding + messageTopLabelHeight + cellBottomLabelHeight
+            let messageLabelsHeight = messageContainerHeight + messageBottomLabelHeight + messageVerticalPadding
+                + messageTopLabelHeight + cellBottomLabelHeight
             cellHeight += max(messageLabelsHeight, avatarHeight)
-            return max(cellHeight, accessoryViewHeight)
+            return max(cellHeight, accessoryViewHeight) + cellBottomViewHeight
         case .cellTop, .cellBottom, .none:
             let totalLabelHeight: CGFloat = cellTopLabelHeight + messageTopLabelHeight
-                + messageContainerHeight + messageVerticalPadding + messageBottomLabelHeight + cellBottomLabelHeight
+                + messageContainerHeight + messageVerticalPadding + messageBottomLabelHeight
+                + cellBottomLabelHeight
             let cellHeight = max(avatarHeight, totalLabelHeight)
-            return max(cellHeight, accessoryViewHeight)
+            return max(cellHeight, accessoryViewHeight) + cellBottomViewHeight
         }
     }
 
@@ -230,6 +238,14 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         return isFromCurrentSender ? outgoingMessageBottomLabelAlignment : incomingMessageBottomLabelAlignment
+    }
+
+    // MARK: - Cell Bottom View
+
+    public func cellBottomViewSize(for message: MessageType) -> CGSize {
+        let dataSource = messagesLayout.messagesDataSource
+        let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
+        return isFromCurrentSender ? outgoingCellBottomViewSize : incomingCellBottomViewSize
     }
 
     // MARK: - Accessory View
