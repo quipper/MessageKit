@@ -83,7 +83,7 @@ class AnnouncementExampleViewController: MessagesViewController {
         let sentDate = Date(timeIntervalSince1970: message.createdTs)
 
         let kind: MessageKind
-        if message.isAnnouncement {
+        if message.isAnnouncement || message.isWarning {
             kind = .announcement(message.text ?? "")
         } else if isImageMessage(message) {
             let media = mediaItem(from: message)
@@ -171,6 +171,16 @@ extension AnnouncementExampleViewController: MessagesDisplayDelegate {
     func timeLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 20
     }
+
+    func configureContainerView(_ containerView: MessageContainerView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        let conversationMessage = conversationMessages[indexPath.row]
+        if conversationMessage.isWarning {
+            containerView.layer.cornerRadius = 6
+            containerView.layer.borderColor = UIColor.red.cgColor
+            containerView.layer.borderWidth = 1
+            containerView.layer.mask = nil
+        }
+    }
 }
 
 extension AnnouncementExampleViewController: MessagesLayoutDelegate {
@@ -189,24 +199,28 @@ extension AnnouncementExampleViewController: MessagesLayoutDelegate {
     // MARK: - All Messages
     func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         guard conversationMessages.count > indexPath.row else { fatalError("message couldn't find") }
+        let conversationMessage = conversationMessages[indexPath.row]
 
-        switch message.kind {
-        case .announcement:
+        if conversationMessage.isWarning {
+            return .red
+        } else if conversationMessage.isAnnouncement {
             return .black
-        default:
+        } else {
             return isFromCurrentSender(message: message) ? .white : .black
         }
     }
 
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
         guard conversationMessages.count > indexPath.row else { fatalError("message couldn't find") }
+        let conversationMessage = conversationMessages[indexPath.row]
 
-        switch message.kind {
-        case .announcement:
+        if conversationMessage.isWarning {
+            return .white
+        } else if conversationMessage.isAnnouncement {
             return .lightGray
-        case .photo:
+        } else if isImageMessage(conversationMessage) {
             return .clear
-        default:
+        } else {
             return isFromCurrentSender(message: message) ? UIColor.green : UIColor.lightGray
         }
     }
@@ -307,7 +321,12 @@ enum ConversationMessageMockFactory {
                                 text: "Last announcement",
                                 image: nil,
                                 createdTs: Date().timeIntervalSince1970,
-                                isAnnouncement: true)
+                                isAnnouncement: true),
+            ConversationMessage(sender: other,
+                                text: "WARNING",
+                                image: nil,
+                                createdTs: Date().timeIntervalSince1970,
+                                isWarning: true)
         ]
     }
 }
@@ -318,14 +337,16 @@ struct ConversationMessage {
     let image: UIImage?
     let createdTs: TimeInterval
     let isAnnouncement: Bool
+    let isWarning: Bool
 
     init(sender: User, text: String? = nil, image: UIImage? = nil,
-         createdTs: TimeInterval, isAnnouncement: Bool = false) {
+         createdTs: TimeInterval, isAnnouncement: Bool = false, isWarning: Bool = false) {
         self.sender = sender
         self.text = text
         self.image = image
         self.createdTs = createdTs
         self.isAnnouncement = isAnnouncement
+        self.isWarning = isWarning
     }
 }
 
