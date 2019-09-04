@@ -29,4 +29,5 @@ public enum MessageStyle {
     case leftBubble
     case rightBubble
     case announcement
+    case warning(color: UIColor)
 }
