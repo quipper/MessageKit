@@ -58,9 +58,6 @@ open class MessageSizeCalculator: CellSizeCalculator {
     public var incomingAccessoryViewSize = CGSize.zero
     public var outgoingAccessoryViewSize = CGSize.zero
 
-    public var incomingCellBottomViewSize = CGSize.zero
-    public var outgoingCellBottomViewSize = CGSize.zero
-
     public var incomingAccessoryViewPadding = HorizontalEdgeInsets.zero
     public var outgoingAccessoryViewPadding = HorizontalEdgeInsets.zero
     
@@ -92,7 +89,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
         attributes.messageBottomLabelAlignment = messageBottomLabelAlignment(for: message)
         attributes.messageBottomLabelSize = messageBottomLabelSize(for: message, at: indexPath)
 
-        attributes.cellBottomViewSize = cellBottomViewSize(for: message)
+        attributes.cellBottomViewSize = cellBottomViewSize(for: message, at: indexPath)
 
         attributes.accessoryViewSize = accessoryViewSize(for: message)
         attributes.accessoryViewPadding = accessoryViewPadding(for: message)
@@ -117,7 +114,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let cellTopLabelHeight = cellTopLabelSize(for: message, at: indexPath).height
         let messageTopLabelHeight = messageTopLabelSize(for: message, at: indexPath).height
         let messageVerticalPadding = messageContainerPadding(for: message).vertical
-        let cellBottomViewHeight = cellBottomViewSize(for: message).height
+        let cellBottomViewHeight = cellBottomViewSize(for: message, at: indexPath).height
         let avatarHeight = avatarSize(for: message).height
         let avatarVerticalPosition = avatarPosition(for: message).vertical
         let accessoryViewHeight = accessoryViewSize(for: message).height
@@ -242,10 +239,11 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
     // MARK: - Cell Bottom View
 
-    public func cellBottomViewSize(for message: MessageType) -> CGSize {
-        let dataSource = messagesLayout.messagesDataSource
-        let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
-        return isFromCurrentSender ? outgoingCellBottomViewSize : incomingCellBottomViewSize
+    public func cellBottomViewSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
+        let layoutDelegate = messagesLayout.messagesLayoutDelegate
+        let collectionView = messagesLayout.messagesCollectionView
+        let height = layoutDelegate.cellBottomViewHeight(for: message, at: indexPath, in: collectionView)
+        return CGSize(width: messagesLayout.itemWidth, height: height)
     }
 
     // MARK: - Accessory View

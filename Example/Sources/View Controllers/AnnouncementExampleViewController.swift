@@ -21,6 +21,9 @@ class AnnouncementExampleViewController: MessagesViewController {
     private let deleteButtonWidth: CGFloat = 40
     private let retryButtonWidth: CGFloat = 40
 
+    private let outgoingAvatarSize = CGSize(width: 20, height: 20)
+    private let outgoingMessagePadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,11 +36,9 @@ class AnnouncementExampleViewController: MessagesViewController {
         if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
             layout.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
 
-            layout.setMessageOutgoingAvatarSize(CGSize(width: 20, height: 20))
+            layout.setMessageOutgoingAvatarSize(outgoingAvatarSize)
             layout.setMessageOutgoingAvatarPosition(.init(horizontal: .cellTrailing, vertical: .messageBottom))
-            layout.setMessageOutgoingMessagePadding(.init(top: 0, left: 0, bottom: 0, right: 10))
-
-            layout.setMessageOutgoingCellBottomViewSize(CGSize(width: failedLabelWidth + deleteButtonWidth + retryButtonWidth, height: 24))
+            layout.setMessageOutgoingMessagePadding(outgoingMessagePadding)
         }
 
         messagesCollectionView.messagesDataSource = self
@@ -92,6 +93,11 @@ class AnnouncementExampleViewController: MessagesViewController {
                              image: message.image,
                              placeholderImage: message.image!,
                              size: CGSize(width: 182, height: 182))
+    }
+
+    private func isfailedToSendMessage(at indexPath: IndexPath) -> Bool {
+        let conversationMessage = conversationMessages[indexPath.row]
+        return currentSender().senderId == conversationMessage.sender.senderId && conversationMessage.isFailed
     }
 
     func displayMessageSource(from message: ConversationMessage) -> MessageDisplaySource {
@@ -164,6 +170,82 @@ extension AnnouncementExampleViewController: MessagesDataSource {
 }
 
 extension AnnouncementExampleViewController: MessagesDisplayDelegate {
+
+    @objc func didTapDelete(sender: UIButton) {
+        print("didTapDelete index: \(sender.tag)")
+    }
+
+    @objc func didTapRetry(sender: UIButton) {
+        print("didTapRetry index: \(sender.tag)")
+    }
+
+    func configureCellBottomView(_ cellBottomView: UIView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        cellBottomView.subviews.forEach { $0.removeFromSuperview() }
+        guard isfailedToSendMessage(at: indexPath) else {
+            return
+        }
+
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 13.0)
+        label.text = "failed to send the message"
+        label.textColor = .lightGray
+
+        let deleteButton = UIButton()
+        deleteButton.setAttributedTitle(NSAttributedString(string: "delete", attributes: [.font: UIFont.systemFont(ofSize: 13.0), .foregroundColor: UIColor.purple]), for: .normal)
+        deleteButton.addTarget(self, action: #selector(didTapDelete(sender:)), for: .touchUpInside)
+        deleteButton.tag = indexPath.row
+
+        let retryButton = UIButton()
+        retryButton.setAttributedTitle(NSAttributedString(string: "retry", attributes: [.font: UIFont.systemFont(ofSize: 13.0), .foregroundColor: UIColor.blue]), for: .normal)
+        retryButton.addTarget(self, action: #selector(didTapRetry(sender:)), for: .touchUpInside)
+        retryButton.tag = indexPath.row
+
+        cellBottomView.addSubview(label)
+        cellBottomView.addSubview(deleteButton)
+        cellBottomView.addSubview(retryButton)
+
+        let maxX = cellBottomView.frame.maxX - outgoingMessagePadding.right - outgoingAvatarSize.width
+        let height = cellBottomView.bounds.height
+
+        label.frame = CGRect(x: maxX - (failedLabelWidth + retryButtonWidth + deleteButtonWidth), y: 0, width: failedLabelWidth, height: height)
+        deleteButton.frame = CGRect(x: maxX - (deleteButtonWidth + retryButtonWidth), y: 0, width: deleteButtonWidth, height: height)
+        retryButton.frame = CGRect(x: maxX - retryButtonWidth, y: 0, width: retryButtonWidth, height: height)
+    }
+
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        guard !isFromCurrentSender(message: message) else {
+            avatarView.backgroundColor = .black
+            avatarView.layer.cornerRadius = 0
+            return
+        }
+
+        guard conversationMessages.count > indexPath.row else { fatalError("message couldn't find") }
+        let conversationMessage = conversationMessages[indexPath.row]
+        guard shouldShowSenderInfo(for: message, at: indexPath), !conversationMessage.isAnnouncement else {
+            avatarView.isHidden = true
+            return
+        }
+        avatarView.isHidden = false
+
+        let avatar = Avatar(image: nil, initials: "S")
+        avatarView.set(avatar: avatar)
+    }
+
+    func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedString.Key: Any] {
+        return [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue,
+            NSAttributedString.Key.underlineColor: UIColor.white
+        ]
+    }
+
+    func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
+        return [.url]
+    }
+
+}
+
+extension AnnouncementExampleViewController: MessagesLayoutDelegate {
     func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         guard shouldShowTopDateLabel(at: indexPath) else { return 0 }
 
@@ -188,76 +270,11 @@ extension AnnouncementExampleViewController: MessagesDisplayDelegate {
         return 20
     }
 
-    func configureCellBottomView(_ cellBottomView: UIView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        cellBottomView.subviews.forEach { $0.removeFromSuperview() }
-        guard currentSender().senderId == conversationMessages[indexPath.row].sender.senderId else {
-            return
+    func cellBottomViewHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        guard isfailedToSendMessage(at: indexPath) else {
+            return 0
         }
-
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 13.0)
-        label.text = "failed to send the message"
-        label.textColor = .lightGray
-
-        let deleteButton = UIButton()
-        deleteButton.setAttributedTitle(NSAttributedString(string: "delete", attributes: [.font: UIFont.systemFont(ofSize: 13.0), .foregroundColor: UIColor.purple]), for: .normal)
-        deleteButton.addTarget(self, action: #selector(didTapDelete(sender:)), for: .touchUpInside)
-        deleteButton.tag = indexPath.row
-
-        let retryButton = UIButton()
-        retryButton.setAttributedTitle(NSAttributedString(string: "retry", attributes: [.font: UIFont.systemFont(ofSize: 13.0), .foregroundColor: UIColor.blue]), for: .normal)
-        retryButton.addTarget(self, action: #selector(didTapRetry(sender:)), for: .touchUpInside)
-        retryButton.tag = indexPath.row
-
-        cellBottomView.addSubview(label)
-        cellBottomView.addSubview(deleteButton)
-        cellBottomView.addSubview(retryButton)
-
-        let height = cellBottomView.bounds.height
-        label.frame = CGRect(x: 0, y: 0, width: failedLabelWidth, height: height)
-        deleteButton.frame = CGRect(x: failedLabelWidth, y: 0, width: deleteButtonWidth, height: height)
-        retryButton.frame = CGRect(x: failedLabelWidth + deleteButtonWidth, y: 0, width: retryButtonWidth, height: height)
-    }
-
-    @objc func didTapDelete(sender: UIButton) {
-        print("didTapDelete index: \(sender.tag)")
-    }
-
-    @objc func didTapRetry(sender: UIButton) {
-        print("didTapRetry index: \(sender.tag)")
-    }
-
-    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        guard !isFromCurrentSender(message: message) else {
-            avatarView.backgroundColor = .black
-            avatarView.layer.cornerRadius = 0
-            return
-        }
-
-        guard conversationMessages.count > indexPath.row else { fatalError("message couldn't find") }
-        let conversationMessage = conversationMessages[indexPath.row]
-        guard shouldShowSenderInfo(for: message, at: indexPath), !conversationMessage.isAnnouncement else {
-            avatarView.isHidden = true
-            return
-        }
-        avatarView.isHidden = false
-
-        let avatar = Avatar(image: nil, initials: "S")
-        avatarView.set(avatar: avatar)
-    }
-}
-
-extension AnnouncementExampleViewController: MessagesLayoutDelegate {
-    func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedString.Key: Any] {
-        return [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue,
-            NSAttributedString.Key.underlineColor: UIColor.white
-        ]
-    }
-
-    func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
-        return [.url]
+        return 24
     }
 
     // MARK: - All Messages
@@ -300,8 +317,20 @@ extension AnnouncementExampleViewController: MessagesLayoutDelegate {
             return  isFromCurrentSender(message: message) ? .rightBubble : .leftBubble
         }
     }
+}
 
-    func didSelectMessage(at indexPath: IndexPath, message: MessageType) {
+extension AnnouncementExampleViewController: MessageCellDelegate {
+    func didTapMessage(in cell: MessageCollectionViewCell) {
+        guard let indexPath = messagesCollectionView.indexPath(for: cell),
+            let message = messagesCollectionView.messagesDataSource?.messageForItem(at: indexPath, in: messagesCollectionView) else { return }
+        didSelectMessage(at: indexPath, message: message)
+    }
+
+    func didSelectURL(_ url: URL) {
+        print("url selected: \(url.absoluteString)")
+    }
+
+    private func didSelectMessage(at indexPath: IndexPath, message: MessageType) {
         switch message.kind {
         case .text:
             break
@@ -316,19 +345,6 @@ extension AnnouncementExampleViewController: MessagesLayoutDelegate {
         default:
             break
         }
-    }
-
-}
-
-extension AnnouncementExampleViewController: MessageCellDelegate {
-    func didTapMessage(in cell: MessageCollectionViewCell) {
-        guard let indexPath = messagesCollectionView.indexPath(for: cell),
-            let message = messagesCollectionView.messagesDataSource?.messageForItem(at: indexPath, in: messagesCollectionView) else { return }
-        print("message selected: \(message.messageId)")
-    }
-
-    func didSelectURL(_ url: URL) {
-        print("url selected: \(url.absoluteString)")
     }
 }
 
@@ -370,7 +386,8 @@ enum ConversationMessageMockFactory {
                                 createdTs: Date().timeIntervalSince1970),
             ConversationMessage(sender: me,
                                 text: "Thanks",
-                                createdTs: Date().timeIntervalSince1970),
+                                createdTs: Date().timeIntervalSince1970,
+                                isFailed: true),
             ConversationMessage(sender: other,
                                 text: "Last announcement",
                                 image: nil,
@@ -392,15 +409,18 @@ struct ConversationMessage {
     let createdTs: TimeInterval
     let isAnnouncement: Bool
     let isWarning: Bool
+    let isFailed: Bool
 
     init(sender: User, text: String? = nil, image: UIImage? = nil,
-         createdTs: TimeInterval, isAnnouncement: Bool = false, isWarning: Bool = false) {
+         createdTs: TimeInterval, isAnnouncement: Bool = false, isWarning: Bool = false,
+         isFailed: Bool = false) {
         self.sender = sender
         self.text = text
         self.image = image
         self.createdTs = createdTs
         self.isAnnouncement = isAnnouncement
         self.isWarning = isWarning
+        self.isFailed = isFailed
     }
 }
 
