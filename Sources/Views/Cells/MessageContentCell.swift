@@ -335,9 +335,8 @@ open class MessageContentCell: MessageCollectionViewCell {
     /// Positions the cell's bottom view.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutCellBottomView(with attributes: MessagesCollectionViewLayoutAttributes) {
-        let x = messageContainerView.frame.maxX - attributes.cellBottomViewSize.width
         let y = cellBottomLabel.frame.maxY
-        let origin = CGPoint(x: x, y: y)
+        let origin = CGPoint(x: 0, y: y)
 
         cellBottomView.frame = CGRect(origin: origin, size: attributes.cellBottomViewSize)
     }
