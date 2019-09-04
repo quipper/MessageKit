@@ -45,6 +45,12 @@ open class MessageContainerView: UIImageView {
             layer.cornerRadius = 30
             layer.mask = nil
 
+        case .warning(let borderColor):
+            layer.cornerRadius = 6
+            layer.borderColor = borderColor.cgColor
+            layer.borderWidth = 1
+            layer.mask = nil
+
         case .none:
             break
         }

@@ -30,14 +30,15 @@ class AnnouncementExampleViewController: MessagesViewController {
 
     func configureMessageCollectionView() {
 
-        let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout
-        layout?.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+            layout.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
 
-        layout?.setMessageOutgoingAvatarSize(CGSize(width: 20, height: 20))
-        layout?.setMessageOutgoingAvatarPosition(.init(horizontal: .cellTrailing, vertical: .messageBottom))
-        layout?.setMessageOutgoingMessagePadding(.init(top: 0, left: 0, bottom: 0, right: 10))
+            layout.setMessageOutgoingAvatarSize(CGSize(width: 20, height: 20))
+            layout.setMessageOutgoingAvatarPosition(.init(horizontal: .cellTrailing, vertical: .messageBottom))
+            layout.setMessageOutgoingMessagePadding(.init(top: 0, left: 0, bottom: 0, right: 10))
 
-        layout?.setMessageOutgoingCellBottomViewSize(CGSize(width: failedLabelWidth + deleteButtonWidth + retryButtonWidth, height: 24))
+            layout.setMessageOutgoingCellBottomViewSize(CGSize(width: failedLabelWidth + deleteButtonWidth + retryButtonWidth, height: 24))
+        }
 
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesDisplayDelegate = self
@@ -226,16 +227,6 @@ extension AnnouncementExampleViewController: MessagesDisplayDelegate {
         print("didTapRetry index: \(sender.tag)")
     }
 
-    func configureContainerView(_ containerView: MessageContainerView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        let conversationMessage = conversationMessages[indexPath.row]
-        if conversationMessage.isWarning {
-            containerView.layer.cornerRadius = 6
-            containerView.layer.borderColor = UIColor.red.cgColor
-            containerView.layer.borderWidth = 1
-            containerView.layer.mask = nil
-        }
-    }
-
     func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
         guard !isFromCurrentSender(message: message) else {
             avatarView.backgroundColor = .black
@@ -301,7 +292,9 @@ extension AnnouncementExampleViewController: MessagesLayoutDelegate {
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         guard conversationMessages.count > indexPath.row else { fatalError("message couldn't find") }
         let conversationMessage = conversationMessages[indexPath.row]
-        if conversationMessage.isAnnouncement {
+        if conversationMessage.isWarning {
+            return .warning(color: UIColor.red)
+        } else if conversationMessage.isAnnouncement {
             return .announcement
         } else {
             return  isFromCurrentSender(message: message) ? .rightBubble : .leftBubble
