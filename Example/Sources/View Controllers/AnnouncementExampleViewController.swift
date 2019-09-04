@@ -30,14 +30,15 @@ class AnnouncementExampleViewController: MessagesViewController {
 
     func configureMessageCollectionView() {
 
-        let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout
-        layout?.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+            layout.sectionInset = UIEdgeInsets(top: 1, left: 8, bottom: 1, right: 8)
 
-        layout?.setMessageOutgoingAvatarSize(CGSize(width: 20, height: 20))
-        layout?.setMessageOutgoingAvatarPosition(.init(horizontal: .cellTrailing, vertical: .messageBottom))
-        layout?.setMessageOutgoingMessagePadding(.init(top: 0, left: 0, bottom: 0, right: 10))
+            layout.setMessageOutgoingAvatarSize(CGSize(width: 20, height: 20))
+            layout.setMessageOutgoingAvatarPosition(.init(horizontal: .cellTrailing, vertical: .messageBottom))
+            layout.setMessageOutgoingMessagePadding(.init(top: 0, left: 0, bottom: 0, right: 10))
 
-        layout?.setMessageOutgoingCellBottomViewSize(CGSize(width: failedLabelWidth + deleteButtonWidth + retryButtonWidth, height: 24))
+            layout.setMessageOutgoingCellBottomViewSize(CGSize(width: failedLabelWidth + deleteButtonWidth + retryButtonWidth, height: 24))
+        }
 
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesDisplayDelegate = self
