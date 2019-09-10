@@ -39,10 +39,14 @@ open class MessageContainerView: UIImageView {
         switch style {
         case .leftBubble, .rightBubble:
             layer.cornerRadius = 4
+            layer.borderColor = UIColor.clear.cgColor
+            layer.borderWidth = 0
             layer.mask = maskLayer(style: style, roundedRect: bounds)
 
         case .announcement:
             layer.cornerRadius = 30
+            layer.borderColor = UIColor.clear.cgColor
+            layer.borderWidth = 0
             layer.mask = nil
 
         case .warning(let borderColor):
@@ -52,7 +56,9 @@ open class MessageContainerView: UIImageView {
             layer.mask = nil
 
         case .none:
-            break
+            layer.borderColor = UIColor.clear.cgColor
+            layer.borderWidth = 0
+            layer.mask = nil
         }
     }
 
