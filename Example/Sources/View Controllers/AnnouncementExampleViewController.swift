@@ -31,6 +31,12 @@ class AnnouncementExampleViewController: MessagesViewController {
         conversationMessages = ConversationMessageMockFactory.getConversations()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        messagesCollectionView.reloadDataAndKeepOffset()
+    }
+
     func configureMessageCollectionView() {
 
         if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
