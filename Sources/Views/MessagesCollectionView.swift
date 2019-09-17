@@ -126,6 +126,10 @@ open class MessagesCollectionView: UICollectionView {
         let newOffset = CGPoint(
             x: contentOffset.x + (afterContentSize.width - beforeContentSize.width),
             y: contentOffset.y + (afterContentSize.height - beforeContentSize.height))
+        // if offset.y is smaller than contentSize, no need to update contentOffset
+        guard newOffset.y >= contentSize.height else {
+            return
+        }
         setContentOffset(newOffset, animated: false)
     }
 
