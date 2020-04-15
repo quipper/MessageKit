@@ -479,7 +479,7 @@ open class MessageLabel: UILabel {
             guard let date = date else { return }
             handleDate(date)
         case let .link(url):
-            guard let url = url, UIApplication.shared.canOpenURL(url) else { return }
+            guard let url = url, ["http", "https"].contains(url.scheme?.lowercased() ?? "") else { return }
             handleURL(url)
         case let .transitInfoComponents(transitInformation):
             var transformedTransitInformation = [String: String]()
