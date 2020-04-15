@@ -359,6 +359,13 @@ open class MessageLabel: UILabel {
 
         text.enumerateAttribute(NSAttributedString.Key.link, in: range, options: []) { value, range, _ in
             guard let url = value as? URL else { return }
+            let regEx = "((https|http)://)((\\w|-)+)(([.]|[/])((\\w|-)+))+"
+            let predicate = NSPredicate(format:"SELF MATCHES %@", argumentArray:[regEx])
+
+            guard predicate.evaluate(with: url) else {
+                return
+            }
+
             let result = NSTextCheckingResult.linkCheckingResult(range: range, url: url)
             results.append(result)
         }
@@ -479,7 +486,7 @@ open class MessageLabel: UILabel {
             guard let date = date else { return }
             handleDate(date)
         case let .link(url):
-            guard let url = url, UIApplication.shared.canOpenURL(url) else { return }
+            guard let url = url else { return }
             handleURL(url)
         case let .transitInfoComponents(transitInformation):
             var transformedTransitInformation = [String: String]()
