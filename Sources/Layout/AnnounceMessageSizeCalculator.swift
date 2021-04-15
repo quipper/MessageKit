@@ -61,7 +61,7 @@ open class AnnouncementMessageSizeCalculator: MessageSizeCalculator {
         
         switch message.kind {
         case .announcement(let text):
-            attributedText = NSAttributedString(string: text, attributes: [.font: messageLabelFont])
+            attributedText = text
         default:
             fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
         }
