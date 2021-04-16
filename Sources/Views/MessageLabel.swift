@@ -479,8 +479,11 @@ open class MessageLabel: UILabel {
             guard let date = date else { return }
             handleDate(date)
         case let .link(url):
-            guard let url = url, let scheme = url.scheme?.lowercased(), ["http", "https"].contains(scheme) else { return }
-            handleURL(url)
+            var validSchemes = ["http", "https"]
+            if let bundleName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String {
+                validSchemes.append(bundleName.lowercased())
+            }
+            guard let url = url, let scheme = url.scheme?.lowercased(), validSchemes.contains(scheme) else { return }
         case let .transitInfoComponents(transitInformation):
             var transformedTransitInformation = [String: String]()
             guard let transitInformation = transitInformation else { return }
