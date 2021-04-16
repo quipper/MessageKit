@@ -484,6 +484,7 @@ open class MessageLabel: UILabel {
                 validSchemes.append(bundleName.lowercased())
             }
             guard let url = url, let scheme = url.scheme?.lowercased(), validSchemes.contains(scheme) else { return }
+            handleURL(url)
         case let .transitInfoComponents(transitInformation):
             var transformedTransitInformation = [String: String]()
             guard let transitInformation = transitInformation else { return }
