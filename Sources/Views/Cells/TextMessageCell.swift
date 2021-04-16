@@ -79,14 +79,7 @@ open class TextMessageCell: MessageContentCell {
             switch message.kind {
             case .announcement(let text):
                 messageLabel.textAlignment = .center
-                messageLabel.text = text
-
-                let textColor = displayDelegate.textColor(for: message, at: indexPath, in: messagesCollectionView)
-                messageLabel.textColor = textColor
-
-                if let font = messageLabel.messageLabelFont {
-                    messageLabel.font = font
-                }
+                messageLabel.attributedText = text
             case .text(let text), .emoji(let text):
                 messageLabel.textAlignment = .left
                 messageLabel.text = text

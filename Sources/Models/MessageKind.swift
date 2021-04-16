@@ -58,7 +58,7 @@ public enum MessageKind {
     case contact(ContactItem)
 
     /// An announcement message.
-    case announcement(String)
+    case announcement(NSAttributedString)
     
     /// A custom message.
     /// - Note: Using this case requires that you implement the following methods and handle this case:
