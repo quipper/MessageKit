@@ -28,8 +28,8 @@ open class MessageLabel: UILabel {
 
     // MARK: - Private Properties
 
-    private lazy var layoutManager: NSLayoutManager = {
-        let layoutManager = NSLayoutManager()
+    private lazy var layoutManager: MessageLayoutManager = {
+        let layoutManager = MessageLayoutManager()
         layoutManager.addTextContainer(self.textContainer)
         return layoutManager
     }()
