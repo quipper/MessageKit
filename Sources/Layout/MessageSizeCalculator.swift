@@ -321,10 +321,18 @@ open class MessageSizeCalculator: CellSizeCalculator {
     }
 
     internal func labelSize(for attributedText: NSAttributedString, considering maxWidth: CGFloat) -> CGSize {
-        let constraintBox = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
-        let rect = attributedText.boundingRect(with: constraintBox, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).integral
+        let containerSize = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+        let boundingRect = CGRect(origin: .zero, size: containerSize)
+        let textStorage = NSTextStorage(attributedString: attributedText)
+        let textContainer = NSTextContainer(size: containerSize)
 
-        return rect.size
+        let layoutManager = NSLayoutManager()
+        layoutManager.addTextContainer(textContainer)
+        layoutManager.glyphRange(forBoundingRect: boundingRect, in: textContainer)
+        textStorage.addLayoutManager(layoutManager)
+        let rect = layoutManager.usedRect(for: textContainer)
+
+        return rect.integral.size
     }
 }
 
