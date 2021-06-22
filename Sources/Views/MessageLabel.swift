@@ -28,8 +28,8 @@ open class MessageLabel: UILabel {
 
     // MARK: - Private Properties
 
-    private lazy var layoutManager: NSLayoutManager = {
-        let layoutManager = NSLayoutManager()
+    private lazy var layoutManager: MessageLayoutManager = {
+        let layoutManager = MessageLayoutManager()
         layoutManager.addTextContainer(self.textContainer)
         return layoutManager
     }()
@@ -540,4 +540,23 @@ internal enum MessageTextCheckingType {
     case link(URL?)
     case transitInfoComponents([NSTextCheckingKey: String]?)
     case custom(pattern: String, match: String?)
+}
+
+
+private class MessageLayoutManager: NSLayoutManager {
+    @available(iOS 13.0, *)
+    override func showCGGlyphs(_ glyphs: UnsafePointer<CGGlyph>,
+                               positions: UnsafePointer<CGPoint>,
+                                   count glyphCount: Int,
+                                    font: UIFont,
+                              textMatrix: CGAffineTransform,
+                              attributes: [NSAttributedString.Key : Any] = [:],
+                              in CGContext: CGContext) {
+
+        if let foregroundColor = attributes[NSAttributedString.Key.foregroundColor] as? UIColor {
+            CGContext.setFillColor(foregroundColor.cgColor)
+        }
+
+        super.showCGGlyphs(glyphs, positions: positions, count: glyphCount, font: font, textMatrix: textMatrix, attributes: attributes, in: CGContext)
+    }
 }
