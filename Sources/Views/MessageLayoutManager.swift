@@ -10,7 +10,7 @@ import UIKit
 
 open class MessageLayoutManager: NSLayoutManager {
     @available(iOS 13.0, *)
-    override func showCGGlyphs(_ glyphs: UnsafePointer<CGGlyph>,
+    open override func showCGGlyphs(_ glyphs: UnsafePointer<CGGlyph>,
                                positions: UnsafePointer<CGPoint>,
                                    count glyphCount: Int,
                                     font: UIFont,
