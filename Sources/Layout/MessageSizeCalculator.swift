@@ -325,6 +325,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let boundingRect = CGRect(origin: .zero, size: containerSize)
         let textStorage = NSTextStorage(attributedString: attributedText)
         let textContainer = NSTextContainer(size: containerSize)
+        textContainer.lineFragmentPadding = 0
 
         let layoutManager = NSLayoutManager()
         layoutManager.addTextContainer(textContainer)
