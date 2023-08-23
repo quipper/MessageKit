@@ -112,7 +112,7 @@ class AnnouncementExampleViewController: MessagesViewController {
 
         let kind: MessageKind
         if message.isAnnouncement || message.isWarning {
-            kind = .announcement(message.text ?? "")
+            kind = .announcement(NSAttributedString(string: message.text ?? ""))
         } else if isImageMessage(message) {
             let media = mediaItem(from: message)
             kind = .photo(media)
