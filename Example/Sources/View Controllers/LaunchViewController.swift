@@ -33,11 +33,7 @@ final internal class LaunchViewController: UITableViewController {
         return .lightContent
     }
 
-<<<<<<< ours
-    let cells = ["Announcement Example", "Basic Example", "Advanced Example", "Autocomplete Example", "Embedded Example", "Settings", "Source Code", "Contributors"]
-=======
-    let cells = ["Basic Example", "Advanced Example", "Autocomplete Example", "Embedded Example", "Subview Example", "SwiftUI Example", "Settings", "Source Code", "Contributors"]
->>>>>>> theirs
+    let cells = ["Announcement Example", "Basic Example", "Advanced Example", "Autocomplete Example", "Embedded Example", "Subview Example", "SwiftUI Example", "Settings", "Source Code", "Contributors"]
     
     // MARK: - View Life Cycle
     

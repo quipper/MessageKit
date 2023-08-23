@@ -86,12 +86,9 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
         copy.accessoryViewSize = accessoryViewSize
         copy.accessoryViewPadding = accessoryViewPadding
         copy.accessoryViewPosition = accessoryViewPosition
-<<<<<<< ours
         copy.timeLabelAlignment = timeLabelAlignment
         copy.timeLabelSize = timeLabelSize
-=======
         copy.linkPreviewFonts = linkPreviewFonts
->>>>>>> theirs
         return copy
         // swiftlint:enable force_cast
     }
@@ -118,12 +115,9 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
                 && attributes.accessoryViewSize == accessoryViewSize
                 && attributes.accessoryViewPadding == accessoryViewPadding
                 && attributes.accessoryViewPosition == accessoryViewPosition
-<<<<<<< ours
                 && attributes.timeLabelAlignment == timeLabelAlignment
                 && attributes.timeLabelSize == timeLabelSize
-=======
                 && attributes.linkPreviewFonts == linkPreviewFonts
->>>>>>> theirs
         } else {
             return false
         }
