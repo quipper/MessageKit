@@ -118,19 +118,10 @@ open class MessagesCollectionView: UICollectionView {
     // NOTE: This method seems to cause crash in certain cases - https://github.com/MessageKit/MessageKit/issues/725
     // Could try using `scrollToLastItem` above
     public func scrollToBottom(animated: Bool = false) {
-<<<<<<< HEAD
-        let collectionViewContentHeight = collectionViewLayout.collectionViewContentSize.height
-
-        performBatchUpdates(nil) { [weak self] _ in
-            self?.scrollRectToVisible(CGRect(x: 0.0, y: collectionViewContentHeight - 1.0,
-                                             width: 1.0, height: 1.0),
-                                      animated: animated)
-=======
         performBatchUpdates(nil) { [weak self] _ in
             guard let self = self else { return }
             let collectionViewContentHeight = self.collectionViewLayout.collectionViewContentSize.height
             self.scrollRectToVisible(CGRect(0.0, collectionViewContentHeight - 1.0, 1.0, 1.0), animated: animated)
->>>>>>> 3.1.0
         }
     }
     

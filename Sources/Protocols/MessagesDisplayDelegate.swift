@@ -250,13 +250,8 @@ public extension MessagesDisplayDelegate {
         case .emoji:
             return .clear
         default:
-<<<<<<< HEAD
-            guard let dataSource = messagesCollectionView.messagesDataSource else { return .white }
-            return dataSource.isFromCurrentSender(message: message) ? UIColor.outgoingGreen : UIColor.incomingGray
-=======
             guard let dataSource = messagesCollectionView.messagesDataSource else { return .backgroundColor }
             return dataSource.isFromCurrentSender(message: message) ? .outgoingGreen : .incomingGray
->>>>>>> 3.1.0
         }
     }
     
