@@ -35,14 +35,14 @@ MODE="$1"
 
 if [ "$MODE" = "tests" -o "$MODE" = "all" ]; then
   echo "Running MessageKit tests."
-  carthage bootstrap --platform ios
+  ./GitHubActions/install-dependencies.sh
   set -o pipefail && xcodebuild test -project MessageKit.xcodeproj -scheme MessageKitTests -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGNING_REQUIRED=NO | xcpretty -c
   success="1"
 fi
 
 if [ "$MODE" = "framework" -o "$MODE" = "all" ]; then
   echo "Building MessageKit Framework."
-  carthage bootstrap --platform ios
+  ./GitHubActions/install-dependencies.sh
   set -o pipefail && xcodebuild build -project MessageKit.xcodeproj -scheme MessageKit -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGNING_REQUIRED=NO | xcpretty -c
   success="1"
 fi
