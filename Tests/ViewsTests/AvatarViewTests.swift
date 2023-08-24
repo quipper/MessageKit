@@ -50,7 +50,7 @@ class AvatarViewTests: XCTestCase {
     func testWithImage() {
         let avatar = Avatar(image: nil)
         avatarView.set(avatar: avatar)
-        XCTAssertEqual(avatar.initials, "?")
+        XCTAssertEqual(avatar.initials, "")
         XCTAssertEqual(avatarView.layer.cornerRadius, 15.0)
         XCTAssertEqual(avatarView.backgroundColor!.cgColor, UIColor.avatarViewBackground.cgColor)
     }
