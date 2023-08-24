@@ -16,3 +16,18 @@ target 'ChatExample' do
     inherit! :search_paths
   end
 end
+
+# Workaround for https://github.com/pinterest/PINRemoteImage/issues/566
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    next unless %w[PINCache PINRemoteImage].include?(target.name)
+
+    target.build_configurations.each do |config|
+      config.build_settings['OTHER_CFLAGS'] = [
+        '$(inherited)',
+        '-Xclang',
+        '-fcompatibility-qualified-id-block-type-checking'
+      ].join(' ')
+    end
+  end
+end
