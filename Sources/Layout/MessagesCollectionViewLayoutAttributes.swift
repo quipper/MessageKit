@@ -55,6 +55,10 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
     public var accessoryViewSize: CGSize = .zero
     public var accessoryViewPadding: HorizontalEdgeInsets = .zero
     public var accessoryViewPosition: AccessoryPosition = .messageCenter
+
+    public var linkPreviewFonts = LinkPreviewFonts(titleFont: .preferredFont(forTextStyle: .footnote),
+                                                   teaserFont: .preferredFont(forTextStyle: .caption2),
+                                                   domainFont: .preferredFont(forTextStyle: .caption1))
     
     public var timeLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
     public var timeLabelSize: CGSize = .zero
@@ -84,6 +88,7 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
         copy.accessoryViewPosition = accessoryViewPosition
         copy.timeLabelAlignment = timeLabelAlignment
         copy.timeLabelSize = timeLabelSize
+        copy.linkPreviewFonts = linkPreviewFonts
         return copy
         // swiftlint:enable force_cast
     }
@@ -112,6 +117,7 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
                 && attributes.accessoryViewPosition == accessoryViewPosition
                 && attributes.timeLabelAlignment == timeLabelAlignment
                 && attributes.timeLabelSize == timeLabelSize
+                && attributes.linkPreviewFonts == linkPreviewFonts
         } else {
             return false
         }
