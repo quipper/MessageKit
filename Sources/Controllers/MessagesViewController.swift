@@ -465,8 +465,6 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
             break
         }
     }
-<<<<<<< HEAD
-=======
 
     // MARK: - Helpers
     
@@ -493,5 +491,4 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
         let velocity = panGesture.velocity(in: messagesCollectionView)
         return abs(velocity.x) > abs(velocity.y)
     }
->>>>>>> 3.3.0
 }

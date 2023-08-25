@@ -69,13 +69,11 @@ open class MessageContentCell: MessageCollectionViewCell {
         return label
     }()
 
-<<<<<<< HEAD
     /// The bottom view of the cellBottomLabel.
     open var cellBottomView: UIView = UIView()
-=======
+
     /// The time label of the messageBubble.
     open var messageTimestampLabel: InsetLabel = InsetLabel()
->>>>>>> 3.3.0
 
     // Should only add customized subviews - don't change accessoryView itself.
     open var accessoryView: UIView = UIView()
@@ -111,11 +109,8 @@ open class MessageContentCell: MessageCollectionViewCell {
         contentView.addSubview(cellBottomView)
         contentView.addSubview(messageContainerView)
         contentView.addSubview(avatarView)
-<<<<<<< HEAD
         contentView.addSubview(timeLabel)
-=======
         contentView.addSubview(messageTimestampLabel)
->>>>>>> 3.3.0
     }
 
     open override func prepareForReuse() {
@@ -124,11 +119,8 @@ open class MessageContentCell: MessageCollectionViewCell {
         cellBottomLabel.text = nil
         messageTopLabel.text = nil
         messageBottomLabel.text = nil
-<<<<<<< HEAD
         timeLabel.text = nil
-=======
         messageTimestampLabel.attributedText = nil
->>>>>>> 3.3.0
     }
 
     // MARK: - Configuration
@@ -145,11 +137,8 @@ open class MessageContentCell: MessageCollectionViewCell {
         layoutCellBottomView(with: attributes)
         layoutAvatarView(with: attributes)
         layoutAccessoryView(with: attributes)
-<<<<<<< HEAD
         layoutTimeLabel(with: attributes)
-=======
         layoutTimeLabelView(with: attributes)
->>>>>>> 3.3.0
     }
 
     /// Used to configure the cell.
@@ -184,24 +173,18 @@ open class MessageContentCell: MessageCollectionViewCell {
         let bottomCellLabelText = dataSource.cellBottomLabelAttributedText(for: message, at: indexPath)
         let topMessageLabelText = dataSource.messageTopLabelAttributedText(for: message, at: indexPath)
         let bottomMessageLabelText = dataSource.messageBottomLabelAttributedText(for: message, at: indexPath)
-<<<<<<< HEAD
         let timeLabelText = dataSource.timeLabelAttributedText(for: message, at: indexPath)
-
-=======
         let messageTimestampLabelText = dataSource.messageTimestampLabelAttributedText(for: message, at: indexPath)
->>>>>>> 3.3.0
+
         cellTopLabel.attributedText = topCellLabelText
         cellBottomLabel.attributedText = bottomCellLabelText
         messageTopLabel.attributedText = topMessageLabelText
         messageBottomLabel.attributedText = bottomMessageLabelText
-<<<<<<< HEAD
         timeLabel.attributedText = timeLabelText
 
         displayDelegate.configureContainerView(messageContainerView, for: message, at: indexPath, in: messagesCollectionView)
-=======
         messageTimestampLabel.attributedText = messageTimestampLabelText
         messageTimestampLabel.isHidden = !messagesCollectionView.showMessageTimestampOnSwipeLeft
->>>>>>> 3.3.0
     }
 
     /// Handle tap gesture on contentView and its subviews.
@@ -409,7 +392,6 @@ open class MessageContentCell: MessageCollectionViewCell {
         accessoryView.frame = CGRect(origin: origin, size: attributes.accessoryViewSize)
     }
 
-<<<<<<< HEAD
     /// Positions the time label.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutTimeLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
@@ -436,7 +418,8 @@ open class MessageContentCell: MessageCollectionViewCell {
         }
 
         timeLabel.frame = CGRect(origin: origin, size: attributes.timeLabelSize)
-=======
+    }
+
     ///  Positions the message bubble's time label.
     /// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
     open func layoutTimeLabelView(with attributes: MessagesCollectionViewLayoutAttributes) {
@@ -444,6 +427,5 @@ open class MessageContentCell: MessageCollectionViewCell {
         let origin = CGPoint(x: contentView.frame.size.width + paddingLeft, y: contentView.frame.size.height * 0.5)
         let size = CGSize(width: attributes.messageTimeLabelSize.width, height: attributes.messageTimeLabelSize.height)
         messageTimestampLabel.frame = CGRect(origin: origin, size: size)
->>>>>>> 3.3.0
     }
 }

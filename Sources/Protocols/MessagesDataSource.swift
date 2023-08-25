@@ -163,10 +163,10 @@ public extension MessagesDataSource {
         return nil
     }
 
-<<<<<<< HEAD
     func timeLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         return nil
-=======
+    }
+
     func messageTimestampLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         let sentDate = message.sentDate
         let sentDateString = MessageKitDateFormatter.shared.string(from: sentDate)
@@ -178,7 +178,6 @@ public extension MessagesDataSource {
             timeLabelColor = .darkGray
         }
         return NSAttributedString(string: sentDateString, attributes: [NSAttributedString.Key.font: timeLabelFont, NSAttributedString.Key.foregroundColor: timeLabelColor])
->>>>>>> 3.3.0
     }
 
     func customCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UICollectionViewCell {

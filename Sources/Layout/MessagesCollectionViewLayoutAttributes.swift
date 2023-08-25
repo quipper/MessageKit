@@ -50,11 +50,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
     public var messageBottomLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
     public var messageBottomLabelSize: CGSize = .zero
 
-<<<<<<< HEAD
     public var cellBottomViewSize: CGSize = .zero
-=======
     public var messageTimeLabelSize: CGSize = .zero
->>>>>>> 3.3.0
 
     public var accessoryViewSize: CGSize = .zero
     public var accessoryViewPadding: HorizontalEdgeInsets = .zero

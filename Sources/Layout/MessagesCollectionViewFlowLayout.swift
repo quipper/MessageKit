@@ -329,11 +329,8 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 locationMessageSizeCalculator,
                 audioMessageSizeCalculator,
                 contactMessageSizeCalculator,
-<<<<<<< HEAD
-                announcementMessageSizeCalculator
-=======
+                announcementMessageSizeCalculator,
                 linkPreviewMessageSizeCalculator
->>>>>>> 3.3.0
         ]
     }
     
