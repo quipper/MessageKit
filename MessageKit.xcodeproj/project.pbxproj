@@ -10,6 +10,11 @@
 		0EE91E661FDEC888005420A2 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE91E651FDEC887005420A2 /* CGRect+Extensions.swift */; };
 		0EF0888C206F7E83007F2F58 /* CellSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF0888B206F7E83007F2F58 /* CellSizeCalculator.swift */; };
 		135E907624AB3B33000EE6AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 135E907524AB3B33000EE6AA /* Assets.xcassets */; };
+<<<<<<< HEAD
+=======
+		1C93A97D251743DE008E4DE0 /* MessageKind+textMessageKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C93A97C251743DE008E4DE0 /* MessageKind+textMessageKind.swift */; };
+		1F066E131FD90BB600E11013 /* MessagesViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7FC8CB1FD2700B006CC979 /* MessagesViewControllerSpec.swift */; };
+>>>>>>> 3.4.2
 		1F066E141FD90BB700E11013 /* MessageLabelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F066E101FD90A0600E11013 /* MessageLabelSpec.swift */; };
 		1F066E1D1FDA3C1700E11013 /* SenderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F066E1C1FDA3C1700E11013 /* SenderSpec.swift */; };
 		1F066E211FDA3DEA00E11013 /* AvatarSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F066E201FDA3DEA00E11013 /* AvatarSpec.swift */; };
@@ -33,7 +38,6 @@
 		3725C9D42438C8EF00800CED /* LinkPreviewMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725C9D32438C8EF00800CED /* LinkPreviewMessageCell.swift */; };
 		3725C9D62438DC7900800CED /* LinkPreviewFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725C9D52438DC7900800CED /* LinkPreviewFonts.swift */; };
 		3725C9D82438E35100800CED /* LinkPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725C9D72438E35100800CED /* LinkPreviewView.swift */; };
-		3725C9DA2438E50600800CED /* ConcreteMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3725C9D92438E50600800CED /* ConcreteMessage.swift */; };
 		375CC61E2438B2C100D80CE7 /* LinkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375CC61D2438B2C100D80CE7 /* LinkItem.swift */; };
 		375CC6202438B6FC00D80CE7 /* LinkPreviewMessageSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375CC61F2438B6FC00D80CE7 /* LinkPreviewMessageSizeCalculator.swift */; };
 		382C794221705D2000F4FAF5 /* HorizontalEdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382C794121705D2000F4FAF5 /* HorizontalEdgeInsets.swift */; };
@@ -132,6 +136,7 @@
 		0EE91E651FDEC887005420A2 /* CGRect+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
 		0EF0888B206F7E83007F2F58 /* CellSizeCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellSizeCalculator.swift; sourceTree = "<group>"; };
 		135E907524AB3B33000EE6AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1C93A97C251743DE008E4DE0 /* MessageKind+textMessageKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MessageKind+textMessageKind.swift"; sourceTree = "<group>"; };
 		1F066E101FD90A0600E11013 /* MessageLabelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLabelSpec.swift; sourceTree = "<group>"; };
 		1F066E1C1FDA3C1700E11013 /* SenderSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderSpec.swift; sourceTree = "<group>"; };
 		1F066E201FDA3DEA00E11013 /* AvatarSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSpec.swift; sourceTree = "<group>"; };
@@ -415,6 +420,12 @@
 		B09643981F295D43004D0129 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
+=======
+				1C93A97C251743DE008E4DE0 /* MessageKind+textMessageKind.swift */,
+				50FF34562237FE6A0004DCD7 /* UIImage+Extensions.swift */,
+				0EE91E651FDEC887005420A2 /* CGRect+Extensions.swift */,
+>>>>>>> 3.4.2
 				B7A03F671F8669EB006AEF79 /* Bundle+Extensions.swift */,
 				0EE91E651FDEC887005420A2 /* CGRect+Extensions.swift */,
 				B7A03F681F8669EB006AEF79 /* NSAttributedString+Extensions.swift */,
@@ -648,6 +659,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				382C794221705D2000F4FAF5 /* HorizontalEdgeInsets.swift in Sources */,
+<<<<<<< HEAD
+=======
+				B7A03F3C1F866946006AEF79 /* LocationMessageCell.swift in Sources */,
+				1C93A97D251743DE008E4DE0 /* MessageKind+textMessageKind.swift in Sources */,
+				1FF377AA20087D78004FD648 /* MessagesViewController+Menu.swift in Sources */,
+>>>>>>> 3.4.2
 				B7A03F5B1F8669CA006AEF79 /* MessageType.swift in Sources */,
 				B7A03F601F8669CA006AEF79 /* MessagesDisplayDelegate.swift in Sources */,
 				1FE783A8206633C0007FA024 /* InsetLabel.swift in Sources */,
@@ -666,7 +683,11 @@
 				B7A03F6C1F8669EB006AEF79 /* UIView+Extensions.swift in Sources */,
 				383B9EB121728BAD008AB91A /* SenderType.swift in Sources */,
 				B7A03F3A1F866946006AEF79 /* TextMessageCell.swift in Sources */,
+<<<<<<< HEAD
 				3725C9DA2438E50600800CED /* ConcreteMessage.swift in Sources */,
+=======
+				50FF34552237FE4C0004DCD7 /* ContactItem.swift in Sources */,
+>>>>>>> 3.4.2
 				B7A03F191F86682C006AEF79 /* MessagesCollectionViewLayoutAttributes.swift in Sources */,
 				3725C9D82438E35100800CED /* LinkPreviewView.swift in Sources */,
 				B7A03F461F86694F006AEF79 /* AvatarView.swift in Sources */,
@@ -889,7 +910,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Supporting/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)";
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.messagekit.MessageKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -915,7 +936,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Supporting/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)";
-				MARKETING_VERSION = 3.4.1;
+				MARKETING_VERSION = 3.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.messagekit.MessageKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

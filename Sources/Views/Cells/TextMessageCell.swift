@@ -76,10 +76,15 @@ open class TextMessageCell: MessageContentCell {
                 let attributes = displayDelegate.detectorAttributes(for: detector, and: message, at: indexPath)
                 messageLabel.setAttributes(attributes, detector: detector)
             }
+<<<<<<< HEAD
             switch message.kind {
             case .announcement(let text):
                 messageLabel.textAlignment = .center
                 messageLabel.attributedText = text
+=======
+            let textMessageKind = message.kind.textMessageKind
+            switch textMessageKind {
+>>>>>>> 3.4.2
             case .text(let text), .emoji(let text):
                 messageLabel.textAlignment = .left
                 messageLabel.text = text
