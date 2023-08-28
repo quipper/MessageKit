@@ -478,7 +478,8 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     }
     
     @objc private func clearMemoryCache() {
-        MessageStyle.bubbleImageCache.removeAllObjects()
+        // Since quipper/MessageKit does not use image caches, the next line is commented out.
+        // MessageStyle.bubbleImageCache.removeAllObjects()
     }
 
     // MARK: - UIGestureRecognizerDelegate
