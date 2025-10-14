@@ -90,6 +90,12 @@ internal extension MessagesViewController {
         // view.
 
         guard let keyboardEndFrameInScreenCoords = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+
+        // On iOS 26 and later, keyboard notifications may be sent with an empty frame when the keyboard is dismissed.
+        if #available(iOS 26, *), keyboardEndFrameInScreenCoords.isEmpty {
+            return
+        }
+
         let keyboardEndFrame = view.convert(keyboardEndFrameInScreenCoords, from: view.window)
 
         let newBottomInset = requiredScrollViewBottomInset(forKeyboardFrame: keyboardEndFrame)
